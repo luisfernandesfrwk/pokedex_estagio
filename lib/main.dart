@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_estagio/homepage.dart';
+import 'package:hexcolor/hexcolor.dart';
+import 'package:flutter/services.dart';
+import 'package:projeto_estagio/screens/home_screen.dart';
 
 void main() {
   runApp(const MyApp());
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+      overlays: [SystemUiOverlay.bottom]);
 }
 
 class MyApp extends StatelessWidget {
@@ -10,11 +14,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        fontFamily: 'Roboto',
+        primaryColor: HexColor("464646"),
       ),
-      home: const HomePage(),
+      home: const HomeScreen(),
     );
   }
 }
