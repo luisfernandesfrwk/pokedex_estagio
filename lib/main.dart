@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:flutter/services.dart';
-import 'package:projeto_estagio/screens/home_screen.dart';
+import 'package:projeto_estagio/screens/home/home_screen.dart';
+import 'package:projeto_estagio/utils/colors_util.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         fontFamily: 'Roboto',
-        primaryColor: HexColor("464646"),
+        primaryColor: ColorsUtil.appBackground,
       ),
       home: const HomeScreen(),
     );
