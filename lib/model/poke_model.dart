@@ -23,8 +23,6 @@ class Pokemon {
 
   factory Pokemon.fromJson(String str) => Pokemon.fromMap(json.decode(str));
 
-  String toJson() => json.encode(toMap());
-
   factory Pokemon.fromMap(Map<String, dynamic> json) => Pokemon(
         abilities: List<Ability>.from(
             json["abilities"].map((x) => Ability.fromMap(x))),
@@ -36,17 +34,6 @@ class Pokemon {
         stats: List<Stat>.from(json["stats"].map((x) => Stat.fromMap(x))),
         types: List<Type>.from(json["types"].map((x) => Type.fromMap(x))),
       );
-
-  Map<String, dynamic> toMap() => {
-        "abilities": List<dynamic>.from(abilities.map((x) => x.toMap())),
-        "id": id,
-        "moves": List<dynamic>.from(moves.map((x) => x.toMap())),
-        "name": name,
-        "order": order,
-        "sprites": sprites.toMap(),
-        "stats": List<dynamic>.from(stats.map((x) => x.toMap())),
-        "types": List<dynamic>.from(types.map((x) => x.toMap())),
-      };
 }
 
 class Ability {
@@ -58,15 +45,9 @@ class Ability {
 
   factory Ability.fromJson(String str) => Ability.fromMap(json.decode(str));
 
-  String toJson() => json.encode(toMap());
-
   factory Ability.fromMap(Map<String, dynamic> json) => Ability(
         ability: Species.fromMap(json["ability"]),
       );
-
-  Map<String, dynamic> toMap() => {
-        "ability": ability.toMap(),
-      };
 }
 
 class Species {
@@ -80,17 +61,10 @@ class Species {
 
   factory Species.fromJson(String str) => Species.fromMap(json.decode(str));
 
-  String toJson() => json.encode(toMap());
-
   factory Species.fromMap(Map<String, dynamic> json) => Species(
         name: json["name"],
         url: json["url"],
       );
-
-  Map<String, dynamic> toMap() => {
-        "name": name,
-        "url": url,
-      };
 }
 
 class Move {
@@ -102,15 +76,9 @@ class Move {
 
   factory Move.fromJson(String str) => Move.fromMap(json.decode(str));
 
-  String toJson() => json.encode(toMap());
-
   factory Move.fromMap(Map<String, dynamic> json) => Move(
         move: Species.fromMap(json["move"]),
       );
-
-  Map<String, dynamic> toMap() => {
-        "move": move.toMap(),
-      };
 }
 
 class Sprites {
@@ -122,15 +90,9 @@ class Sprites {
 
   factory Sprites.fromJson(String str) => Sprites.fromMap(json.decode(str));
 
-  String toJson() => json.encode(toMap());
-
   factory Sprites.fromMap(Map<String, dynamic> json) => Sprites(
         frontDefault: json["front_default"],
       );
-
-  Map<String, dynamic> toMap() => {
-        "front_default": frontDefault,
-      };
 }
 
 class Other {
@@ -142,15 +104,9 @@ class Other {
 
   factory Other.fromJson(String str) => Other.fromMap(json.decode(str));
 
-  String toJson() => json.encode(toMap());
-
   factory Other.fromMap(Map<String, dynamic> json) => Other(
         officialArtwork: OfficialArtwork.fromMap(json["official-artwork"]),
       );
-
-  Map<String, dynamic> toMap() => {
-        "official-artwork": officialArtwork.toMap(),
-      };
 }
 
 class OfficialArtwork {
@@ -163,15 +119,9 @@ class OfficialArtwork {
   factory OfficialArtwork.fromJson(String str) =>
       OfficialArtwork.fromMap(json.decode(str));
 
-  String toJson() => json.encode(toMap());
-
   factory OfficialArtwork.fromMap(Map<String, dynamic> json) => OfficialArtwork(
         frontDefault: json["front_default"],
       );
-
-  Map<String, dynamic> toMap() => {
-        "front_default": frontDefault,
-      };
 }
 
 class Stat {
@@ -185,17 +135,10 @@ class Stat {
 
   factory Stat.fromJson(String str) => Stat.fromMap(json.decode(str));
 
-  String toJson() => json.encode(toMap());
-
   factory Stat.fromMap(Map<String, dynamic> json) => Stat(
         baseStat: json["base_stat"],
         stat: Species.fromMap(json["stat"]),
       );
-
-  Map<String, dynamic> toMap() => {
-        "base_stat": baseStat,
-        "stat": stat.toMap(),
-      };
 }
 
 class Type {
@@ -209,15 +152,8 @@ class Type {
 
   factory Type.fromJson(String str) => Type.fromMap(json.decode(str));
 
-  String toJson() => json.encode(toMap());
-
   factory Type.fromMap(Map<String, dynamic> json) => Type(
         slot: json["slot"],
         type: Species.fromMap(json["type"]),
       );
-
-  Map<String, dynamic> toMap() => {
-        "slot": slot,
-        "type": type.toMap(),
-      };
 }

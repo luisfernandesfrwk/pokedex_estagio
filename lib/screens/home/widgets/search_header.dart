@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_estagio/api/poke_api.dart';
 import 'package:projeto_estagio/r.dart';
 import 'package:projeto_estagio/utils/colors_util.dart';
 
-class LogoSearchBar extends StatelessWidget {
-  const LogoSearchBar({Key? key}) : super(key: key);
+class SearchHeader extends StatelessWidget {
+  const SearchHeader({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -70,9 +69,7 @@ class LogoSearchBar extends StatelessWidget {
                       size: 25,
                       color: ColorsUtil.searchIcon,
                     ),
-                    onTap: () {
-                      PokeApi().getHttp();
-                    },
+                    onTap: () {},
                   ),
                 ),
               ),
