@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // ignore_for_file: avoid_print
 
 import 'dart:convert';
@@ -33,3 +34,11 @@ class PokeApi {
   //     print(e);
   //   }
   // }
+=======
+class PokeApi {
+    PokeApi({this.pokemon});
+    _baseUrl = "https://pokeapi.co/api/v2/pokemon?limit=1118&offset=0";
+    _pokemonBaseUrl = "https://pokeapi.co/api/v2/${this.pokemon}";
+
+}
+>>>>>>> 24445eb8caac9015d00a9d77959b6edb9d0e40a3
