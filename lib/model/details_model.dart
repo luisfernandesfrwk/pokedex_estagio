@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-class Pokemon {
-  Pokemon({
+class Details {
+  Details({
     required this.abilities,
     required this.id,
     required this.moves,
@@ -21,9 +21,9 @@ class Pokemon {
   List<Stat> stats;
   List<Type> types;
 
-  factory Pokemon.fromJson(String str) => Pokemon.fromMap(json.decode(str));
+  factory Details.fromJson(String str) => Details.fromMap(json.decode(str));
 
-  factory Pokemon.fromMap(Map<String, dynamic> json) => Pokemon(
+  factory Details.fromMap(Map<String, dynamic> json) => Details(
         abilities: List<Ability>.from(
             json["abilities"].map((x) => Ability.fromMap(x))),
         id: json["id"],

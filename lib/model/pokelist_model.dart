@@ -1,18 +1,14 @@
-<<<<<<< HEAD
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 class PokeList {
   PokeList({
     required this.count,
-    required this.next,
-    required this.previous,
+    this.next,
     required this.results,
   });
 
   final int count;
-  final String next;
-  final dynamic previous;
+  final String? next;
   final List<Result> results;
 
   factory PokeList.fromJson(String str) => PokeList.fromMap(json.decode(str));
@@ -20,7 +16,6 @@ class PokeList {
   factory PokeList.fromMap(Map<String, dynamic> json) => PokeList(
         count: json["count"],
         next: json["next"],
-        previous: json["previous"],
         results:
             List<Result>.from(json["results"].map((x) => Result.fromMap(x))),
       );
@@ -42,37 +37,3 @@ class Result {
         url: json["url"],
       );
 }
-=======
-class PokeList_Model {
-  int count;
-  String next;
-  Null previous;
-  List<Results> results;
-
-  PokeList_Model({this.count, this.next, this.previous, this.results});
-
-  PokeList_Model.fromJson(Map<String, dynamic> json) {
-    count = json['count'];
-    next = json['next'];
-    previous = json['previous'];
-    if (json['results'] != null) {
-      results = new List<Results>();
-      json['results'].forEach((v) {
-        results.add(new Results.fromJson(v));
-      });
-    }
-  }
-}
-
-class Results {
-  String name;
-  String url;
-
-  Results({this.name, this.url});
-
-  Results.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-    url = json['url'];
-  }
-}
->>>>>>> 24445eb8caac9015d00a9d77959b6edb9d0e40a3
