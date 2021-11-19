@@ -9,12 +9,19 @@ part of 'pokelist_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$PokeListStore on _PokeListStoreBase, Store {
-  Computed<PokeList?>? _$pokeListComputed;
+  Computed<List<Details?>>? _$listPokemonComputed;
 
   @override
-  PokeList? get pokeList =>
-      (_$pokeListComputed ??= Computed<PokeList?>(() => super.pokeList,
-              name: '_PokeListStoreBase.pokeList'))
+  List<Details?> get listPokemon => (_$listPokemonComputed ??=
+          Computed<List<Details?>>(() => super.listPokemon,
+              name: '_PokeListStoreBase.listPokemon'))
+      .value;
+  Computed<PokeList?>? _$pokeUrlComputed;
+
+  @override
+  PokeList? get pokeUrl =>
+      (_$pokeUrlComputed ??= Computed<PokeList?>(() => super.pokeUrl,
+              name: '_PokeListStoreBase.pokeUrl'))
           .value;
   Computed<Details?>? _$pokeDetailComputed;
 
@@ -23,6 +30,21 @@ mixin _$PokeListStore on _PokeListStoreBase, Store {
       (_$pokeDetailComputed ??= Computed<Details?>(() => super.pokeDetail,
               name: '_PokeListStoreBase.pokeDetail'))
           .value;
+
+  final _$_listPokemonAtom = Atom(name: '_PokeListStoreBase._listPokemon');
+
+  @override
+  List<Details?> get _listPokemon {
+    _$_listPokemonAtom.reportRead();
+    return super._listPokemon;
+  }
+
+  @override
+  set _listPokemon(List<Details?> value) {
+    _$_listPokemonAtom.reportWrite(value, super._listPokemon, () {
+      super._listPokemon = value;
+    });
+  }
 
   final _$_pokemonDetailAtom = Atom(name: '_PokeListStoreBase._pokemonDetail');
 
@@ -39,18 +61,18 @@ mixin _$PokeListStore on _PokeListStoreBase, Store {
     });
   }
 
-  final _$_pokemonsListAtom = Atom(name: '_PokeListStoreBase._pokemonsList');
+  final _$_pokemonsUrlAtom = Atom(name: '_PokeListStoreBase._pokemonsUrl');
 
   @override
-  PokeList? get _pokemonsList {
-    _$_pokemonsListAtom.reportRead();
-    return super._pokemonsList;
+  PokeList? get _pokemonsUrl {
+    _$_pokemonsUrlAtom.reportRead();
+    return super._pokemonsUrl;
   }
 
   @override
-  set _pokemonsList(PokeList? value) {
-    _$_pokemonsListAtom.reportWrite(value, super._pokemonsList, () {
-      super._pokemonsList = value;
+  set _pokemonsUrl(PokeList? value) {
+    _$_pokemonsUrlAtom.reportWrite(value, super._pokemonsUrl, () {
+      super._pokemonsUrl = value;
     });
   }
 
@@ -58,22 +80,22 @@ mixin _$PokeListStore on _PokeListStoreBase, Store {
       ActionController(name: '_PokeListStoreBase');
 
   @override
-  Future<dynamic> fetchPokemonDetail({required String index}) {
+  Future<dynamic> fetchPokemonDetail({required String url}) {
     final _$actionInfo = _$_PokeListStoreBaseActionController.startAction(
         name: '_PokeListStoreBase.fetchPokemonDetail');
     try {
-      return super.fetchPokemonDetail(index: index);
+      return super.fetchPokemonDetail(url: url);
     } finally {
       _$_PokeListStoreBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  Future<dynamic> fetchPokemonList() {
+  Future<dynamic> fetchPokemonUrl() {
     final _$actionInfo = _$_PokeListStoreBaseActionController.startAction(
-        name: '_PokeListStoreBase.fetchPokemonList');
+        name: '_PokeListStoreBase.fetchPokemonUrl');
     try {
-      return super.fetchPokemonList();
+      return super.fetchPokemonUrl();
     } finally {
       _$_PokeListStoreBaseActionController.endAction(_$actionInfo);
     }
@@ -82,7 +104,8 @@ mixin _$PokeListStore on _PokeListStoreBase, Store {
   @override
   String toString() {
     return '''
-pokeList: ${pokeList},
+listPokemon: ${listPokemon},
+pokeUrl: ${pokeUrl},
 pokeDetail: ${pokeDetail}
     ''';
   }

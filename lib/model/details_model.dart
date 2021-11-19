@@ -12,13 +12,13 @@ class Details {
     required this.types,
   });
 
-  List<Ability> abilities;
-  int id;
-  List<Move> moves;
-  String name;
-  int order;
-  Sprites sprites;
-  List<Stat> stats;
+  List<Ability>? abilities;
+  int? id;
+  List<Move>? moves;
+  String? name;
+  int? order;
+  Sprites? sprites;
+  List<Stat>? stats;
   List<Type> types;
 
   factory Details.fromJson(String str) => Details.fromMap(json.decode(str));
@@ -84,15 +84,17 @@ class Move {
 class Sprites {
   Sprites({
     required this.frontDefault,
+    required this.other,
   });
 
   String frontDefault;
+  Other? other;
 
   factory Sprites.fromJson(String str) => Sprites.fromMap(json.decode(str));
 
   factory Sprites.fromMap(Map<String, dynamic> json) => Sprites(
-        frontDefault: json["front_default"],
-      );
+      frontDefault: json["front_default"],
+      other: json["other"] == null ? null : Other.fromMap(json["other"]));
 }
 
 class Other {

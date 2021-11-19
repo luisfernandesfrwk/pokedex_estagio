@@ -7,7 +7,7 @@ class ColorsUtil {
   static final searchIcon = getColorByHex('#0073BC');
   //types
   static final electricType = getColorByHex('#EECC43');
-  static final fireType = getColorByHex('#E96161');
+  static final fireType = getColorByHex('#ED35151');
   static final grassType = getColorByHex('#82BE41');
   static final savageType = getColorByHex('#D86D4C');
   static final normalType = getColorByHex('#A5A5A5');
@@ -21,7 +21,7 @@ class ColorsUtil {
   static final fairyType = getColorByHex('#EA1369');
   static final ghostType = getColorByHex('#9400C8');
   static final groundType = getColorByHex('#6E491E');
-  static final iceType = getColorByHex('#D8F0FA');
+  static final iceType = getColorByHex('#83D5F8');
   static final poisonType = getColorByHex('#9B69D9');
   static final steelType = getColorByHex('#5F756D');
   static final waterType = getColorByHex('#0073BC');
@@ -31,47 +31,47 @@ class ColorsUtil {
   static Color getColorByType({required String type}) {
     switch (type) {
       case 'normal':
-        return getColorByHex('#A5A5A5');
+        return normalType;
       case 'fire':
-        return getColorByHex('#E96161');
+        return fireType;
       case 'electric':
-        return getColorByHex('#EECC43');
+        return electricType;
       case 'grass':
-        return getColorByHex('#82BE41');
+        return grassType;
       case 'savage':
-        return getColorByHex('#D86D4C');
+        return savageType;
       case 'psychic':
-        return getColorByHex('#9D5C7F');
+        return psychicType;
       case 'flying':
-        return getColorByHex('#926032');
+        return flyingType;
       case 'rock':
-        return getColorByHex('#7D7B7A');
+        return rockType;
       case 'fighting':
-        return getColorByHex('#5D87A1');
+        return fightingType;
       case 'bug':
-        return getColorByHex('#3B9950');
+        return bugType;
       case 'dark':
-        return getColorByHex('#5A5979');
+        return darkType;
       case 'dragon':
-        return getColorByHex('#61CAD9');
+        return dragonType;
       case 'fairy':
-        return getColorByHex('#EA1369');
+        return fairyType;
       case 'ghost':
-        return getColorByHex('#9400C8');
+        return ghostType;
       case 'ground':
-        return getColorByHex('#6E491E');
+        return groundType;
       case 'ice':
-        return getColorByHex('#D8F0FA');
+        return iceType;
       case 'poison':
-        return getColorByHex('#9B69D9');
+        return poisonType;
       case 'steel':
-        return getColorByHex('#5F756D');
+        return steelType;
       case 'water':
-        return getColorByHex('#0073BC');
+        return waterType;
       case 'unknowm':
-        return getColorByHex('#1C9C88');
+        return unknowmType;
       case 'shadow':
-        return getColorByHex('#5D466E');
+        return shadowType;
       default:
         return ColorsUtil.appBackground;
     }

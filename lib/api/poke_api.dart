@@ -2,7 +2,6 @@
 
 import 'dart:convert';
 
-import 'package:dio/dio.dart';
 import 'package:projeto_estagio/model/details_model.dart';
 import 'package:projeto_estagio/model/pokelist_model.dart';
 import 'package:projeto_estagio/utils/consts_util.dart';
@@ -21,9 +20,9 @@ class PokeApi {
     }
   }
 
-  Future<Details?> findPokemon({required String index}) async {
+  Future<Details?> findPokemon({required String url}) async {
     try {
-      final response = await FuncUtil.getUrl(Consts.baseUrl + index);
+      final response = await FuncUtil.getUrl(url);
       return Details.fromMap(response.data);
     } catch (e) {
       print('error: $e');
