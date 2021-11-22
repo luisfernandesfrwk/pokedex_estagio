@@ -17,7 +17,6 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Pokedex app',
       theme: ThemeData(
-        fontFamily: 'Roboto',
         primaryColor: ColorsUtil.appBackground,
       ),
       home: const HomeScreen(),

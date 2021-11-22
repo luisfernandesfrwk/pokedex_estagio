@@ -4,8 +4,6 @@ import 'package:mobx/mobx.dart';
 import 'package:projeto_estagio/api/poke_api.dart';
 import 'package:projeto_estagio/model/details_model.dart';
 import 'package:projeto_estagio/model/pokelist_model.dart';
-import 'package:projeto_estagio/utils/consts_util.dart';
-import 'package:projeto_estagio/utils/func_util.dart';
 part 'pokelist_store.g.dart';
 
 class PokeListStore = _PokeListStoreBase with _$PokeListStore;
@@ -14,7 +12,11 @@ abstract class _PokeListStoreBase with Store {
   final PokeApi _pokeApi = PokeApi();
 
   @observable
-  List<Details?> _listPokemon = <Details>[];
+  String search = '';
+
+  @observable
+  // ignore: prefer_final_fields
+  ObservableList<Details?> _listPokemon = ObservableList<Details>();
 
   @observable
   Details? _pokemonDetail;
@@ -23,13 +25,19 @@ abstract class _PokeListStoreBase with Store {
   PokeList? _pokemonsUrl;
 
   @computed
-  List<Details?> get listPokemon => _listPokemon;
+  ObservableList<Details?> get listPokemon => _listPokemon;
 
   @computed
   PokeList? get pokeUrl => _pokemonsUrl;
 
   @computed
   Details? get pokeDetail => _pokemonDetail;
+
+  @action
+  String setSearch(String value) => search = value;
+
+  @action
+  void setList() {}
 
   @action
   Future fetchPokemonDetail({required String url}) => _pokeApi
@@ -43,7 +51,7 @@ abstract class _PokeListStoreBase with Store {
   Future fetchPokemonUrl() => _pokeApi.findAllPokemons().then((pokemons) {
         _pokemonsUrl = pokemons;
         pokemons?.results.forEach((element) async {
-          final response = await findPokemon(url: element.url);
+          final response = await _pokeApi.findPokemon(url: element.url);
           listPokemon.add(Details(
               abilities: response?.abilities,
               id: response?.id,
@@ -53,32 +61,9 @@ abstract class _PokeListStoreBase with Store {
               sprites: response?.sprites,
               stats: response?.stats,
               types: response!.types));
+          listPokemon.sort((a, b) => a!.id!.toInt().compareTo(b!.id!.toInt()));
         });
       }).onError((error, stackTrace) {
         print('erro: $error');
       });
-
-  Future<PokeList?> findAllPokemons() async {
-    try {
-      final response =
-          await FuncUtil.getUrl('${Consts.baseUrl}?offset=0&limit=1118');
-
-      // print(type);
-      return PokeList.fromMap(response.data);
-    } catch (e) {
-      print('error: $e');
-      return null;
-    }
-  }
-
-  Future<Details?> findPokemon({required String url}) async {
-    try {
-      final response = await FuncUtil.getUrl(url);
-
-      return Details.fromMap(response.data);
-    } catch (e) {
-      print('error: $e');
-      return null;
-    }
-  }
 }

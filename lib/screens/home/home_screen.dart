@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:projeto_estagio/controller/pokelist_store.dart';
@@ -6,6 +8,7 @@ import 'package:projeto_estagio/screens/home/widgets/search_header.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:projeto_estagio/utils/colors_util.dart';
 import 'package:projeto_estagio/utils/func_util.dart';
+import 'package:projeto_estagio/widgets/type_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -22,20 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     if (_pokeStore.pokeUrl == null) {
       _pokeStore.fetchPokemonUrl();
-
-      _pokeStore.listPokemon
-          .sort((a, b) => a!.id!.toInt().compareTo(a.id!.toInt()));
-      _pokeStore.listPokemon;
     }
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _pokeStore.listPokemon;
-
-    _pokeStore.listPokemon
-        .sort((a, b) => a!.id!.toInt().compareTo(a.id!.toInt()));
   }
 
   @override
@@ -53,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            const SearchHeader(),
+            SearchHeader(),
             Expanded(child: _buildList()),
           ],
         ),
@@ -71,111 +61,76 @@ class _HomeScreenState extends State<HomeScreen> {
               shrinkWrap: true,
               physics: const BouncingScrollPhysics(),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                mainAxisSpacing: 20,
-                crossAxisSpacing: 20,
+                childAspectRatio: 151 / 107,
+                mainAxisSpacing: 19,
+                crossAxisSpacing: 19,
                 crossAxisCount: 2,
               ),
               itemCount: _pokeStore.listPokemon
                   .length, //_pokeListStore.pokeList!.results.length,
               itemBuilder: (context, index) {
                 Details? details = _pokeStore.listPokemon[index];
-                var pokemonName = details?.name;
-                _pokeStore.listPokemon
-                    .sort((a, b) => a!.id!.toInt().compareTo(b!.id!.toInt()));
 
-                return Container(
-                  decoration: BoxDecoration(
-                    color: ColorsUtil.getColorByType(
-                        type: details!.types[0].type.name),
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  height: 120,
-                  width: 120,
-                  child: Stack(
-                    alignment: AlignmentDirectional.center,
-                    overflow: Overflow.visible,
-                    fit: StackFit.expand,
-                    children: [
-                      Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  FuncUtil.capitalize('$pokemonName'),
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 12,
-                                      fontFamily: 'Roboto',
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Text(
-                                  FuncUtil.capitalize(
-                                      details.types[0].type.name),
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 12,
-                                      fontFamily: 'Roboto',
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      Positioned(
-                        right: -20,
-                        child: CachedNetworkImage(
-                          imageUrl: details
-                              .sprites!.other!.officialArtwork.frontDefault,
-                          alignment: Alignment.topRight,
-                          fit: BoxFit.cover,
-                          width: 90,
-                          height: 90,
-                        ),
-                      ),
-                    ],
-                  ),
-                );
+                var pokemonName = details?.name;
+                var typeName = details!.types[0].type.name;
+
+                return _card(details, pokemonName, typeName);
               })
           : const Center(
               child: CircularProgressIndicator(),
             );
     });
   }
+
+  Container _card(Details? details, String? pokemonName, String typeName) {
+    final typeColor = ColorsUtil.getColorByType(type: typeName);
+    return Container(
+      padding: EdgeInsets.fromLTRB(11, 0, 0, 0),
+      decoration: BoxDecoration(
+          color: typeColor,
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: typeColor.withOpacity(0.3),
+              spreadRadius: 0.8,
+              blurRadius: 2,
+              offset: const Offset(0, 2),
+            )
+          ]),
+      child: Stack(
+        alignment: AlignmentDirectional.centerStart,
+        clipBehavior: Clip.none,
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                FuncUtil.capitalize('$pokemonName'),
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(
+                height: 14,
+              ),
+              TypeWidget(typeName: typeName),
+            ],
+          ),
+          Positioned(
+            top: 5,
+            right: -11,
+            child: CachedNetworkImage(
+              imageUrl: details!.sprites!.other!.officialArtwork.frontDefault,
+              alignment: Alignment.topRight,
+              fit: BoxFit.cover,
+              width: 81,
+              height: 81,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
-
-
-
-
-// ListView.builder(
-//               physics: const NeverScrollableScrollPhysics(),
-//               scrollDirection: Axis.vertical,
-//               shrinkWrap: true,
-//               itemCount: _pokeListStore.pokeList!.results.length,
-//               itemBuilder: (context, index) {
-//                 var pokemon = _pokeListStore.pokeList!.results[index++].name;
-//                 return Row(
-//                   children: [
-//                     Card(
-//                       margin: const EdgeInsets.fromLTRB(20, 16, 8, 8),
-//                       child: Container(
-//                         height: 97,
-//                         width: 140,
-//                         child: Center(
-//                           child: Text(pokemon),
-//                         ),
-//                       ),
-//                     ),
-//                   ],
-//                 );
-//               })

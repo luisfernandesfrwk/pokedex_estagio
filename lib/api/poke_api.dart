@@ -1,7 +1,5 @@
 // ignore_for_file: avoid_print
 
-import 'dart:convert';
-
 import 'package:projeto_estagio/model/details_model.dart';
 import 'package:projeto_estagio/model/pokelist_model.dart';
 import 'package:projeto_estagio/utils/consts_util.dart';
@@ -11,7 +9,7 @@ class PokeApi {
   Future<PokeList?> findAllPokemons() async {
     try {
       final response =
-          await FuncUtil.getUrl('${Consts.baseUrl}?offset=0&limit=180');
+          await FuncUtil.getUrl('${Consts.baseUrl}?offset=0&limit=50');
 
       return PokeList.fromMap(response.data);
     } catch (e) {
