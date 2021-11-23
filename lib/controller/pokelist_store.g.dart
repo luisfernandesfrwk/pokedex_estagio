@@ -9,12 +9,26 @@ part of 'pokelist_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$PokeListStore on _PokeListStoreBase, Store {
+  Computed<bool>? _$getSearchComputed;
+
+  @override
+  bool get getSearch =>
+      (_$getSearchComputed ??= Computed<bool>(() => super.getSearch,
+              name: '_PokeListStoreBase.getSearch'))
+          .value;
   Computed<ObservableList<Details?>>? _$listPokemonComputed;
 
   @override
   ObservableList<Details?> get listPokemon => (_$listPokemonComputed ??=
           Computed<ObservableList<Details?>>(() => super.listPokemon,
               name: '_PokeListStoreBase.listPokemon'))
+      .value;
+  Computed<ObservableList<Details?>>? _$listSearchComputed;
+
+  @override
+  ObservableList<Details?> get listSearch => (_$listSearchComputed ??=
+          Computed<ObservableList<Details?>>(() => super.listSearch,
+              name: '_PokeListStoreBase.listSearch'))
       .value;
   Computed<PokeList?>? _$pokeUrlComputed;
 
@@ -31,18 +45,33 @@ mixin _$PokeListStore on _PokeListStoreBase, Store {
               name: '_PokeListStoreBase.pokeDetail'))
           .value;
 
-  final _$searchAtom = Atom(name: '_PokeListStoreBase.search');
+  final _$_searchAtom = Atom(name: '_PokeListStoreBase._search');
 
   @override
-  String get search {
-    _$searchAtom.reportRead();
-    return super.search;
+  String get _search {
+    _$_searchAtom.reportRead();
+    return super._search;
   }
 
   @override
-  set search(String value) {
-    _$searchAtom.reportWrite(value, super.search, () {
-      super.search = value;
+  set _search(String value) {
+    _$_searchAtom.reportWrite(value, super._search, () {
+      super._search = value;
+    });
+  }
+
+  final _$_listSearchAtom = Atom(name: '_PokeListStoreBase._listSearch');
+
+  @override
+  ObservableList<Details?> get _listSearch {
+    _$_listSearchAtom.reportRead();
+    return super._listSearch;
+  }
+
+  @override
+  set _listSearch(ObservableList<Details?> value) {
+    _$_listSearchAtom.reportWrite(value, super._listSearch, () {
+      super._listSearch = value;
     });
   }
 
@@ -95,22 +124,33 @@ mixin _$PokeListStore on _PokeListStoreBase, Store {
       ActionController(name: '_PokeListStoreBase');
 
   @override
-  String setSearch(String value) {
+  String setNewSearch(String value) {
     final _$actionInfo = _$_PokeListStoreBaseActionController.startAction(
-        name: '_PokeListStoreBase.setSearch');
+        name: '_PokeListStoreBase.setNewSearch');
     try {
-      return super.setSearch(value);
+      return super.setNewSearch(value);
     } finally {
       _$_PokeListStoreBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void setList() {
+  void setListSearch() {
     final _$actionInfo = _$_PokeListStoreBaseActionController.startAction(
-        name: '_PokeListStoreBase.setList');
+        name: '_PokeListStoreBase.setListSearch');
     try {
-      return super.setList();
+      return super.setListSearch();
+    } finally {
+      _$_PokeListStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setHomeList() {
+    final _$actionInfo = _$_PokeListStoreBaseActionController.startAction(
+        name: '_PokeListStoreBase.setHomeList');
+    try {
+      return super.setHomeList();
     } finally {
       _$_PokeListStoreBaseActionController.endAction(_$actionInfo);
     }
@@ -141,8 +181,9 @@ mixin _$PokeListStore on _PokeListStoreBase, Store {
   @override
   String toString() {
     return '''
-search: ${search},
+getSearch: ${getSearch},
 listPokemon: ${listPokemon},
+listSearch: ${listSearch},
 pokeUrl: ${pokeUrl},
 pokeDetail: ${pokeDetail}
     ''';

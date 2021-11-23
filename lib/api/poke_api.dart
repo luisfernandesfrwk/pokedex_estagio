@@ -28,13 +28,3 @@ class PokeApi {
     }
   }
 }
-
-// exemplo
- // void getHttp() async {
-  //   try {
-  //     var response = await Dio().get(_baseUrl);
-  //     print(response.data);
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }

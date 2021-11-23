@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_function_literals_in_foreach_calls
+// ignore_for_file: avoid_function_literals_in_foreach_calls, prefer_final_fields, unused_field
 
 import 'package:mobx/mobx.dart';
 import 'package:projeto_estagio/api/poke_api.dart';
@@ -12,10 +12,12 @@ abstract class _PokeListStoreBase with Store {
   final PokeApi _pokeApi = PokeApi();
 
   @observable
-  String search = '';
+  String _search = "";
 
   @observable
-  // ignore: prefer_final_fields
+  ObservableList<Details?> _listSearch = ObservableList<Details>();
+
+  @observable
   ObservableList<Details?> _listPokemon = ObservableList<Details>();
 
   @observable
@@ -25,7 +27,13 @@ abstract class _PokeListStoreBase with Store {
   PokeList? _pokemonsUrl;
 
   @computed
+  bool get getSearch => _search.isEmpty;
+
+  @computed
   ObservableList<Details?> get listPokemon => _listPokemon;
+
+  @computed
+  ObservableList<Details?> get listSearch => _listSearch;
 
   @computed
   PokeList? get pokeUrl => _pokemonsUrl;
@@ -34,10 +42,26 @@ abstract class _PokeListStoreBase with Store {
   Details? get pokeDetail => _pokemonDetail;
 
   @action
-  String setSearch(String value) => search = value;
+  String setNewSearch(String value) => _search = value;
 
   @action
-  void setList() {}
+  void setListSearch() {
+    if (_search.length > 3) {
+      for (var pokemon in _listPokemon) {
+        if (pokemon!.name!.contains(_search)) {
+          _listSearch.add(pokemon);
+        }
+      }
+    } else {
+      _listSearch.clear();
+      setHomeList();
+    }
+  }
+
+  @action
+  void setHomeList() {
+    _listSearch = ObservableList<Details?>()..addAll(_listPokemon);
+  }
 
   @action
   Future fetchPokemonDetail({required String url}) => _pokeApi
@@ -61,7 +85,8 @@ abstract class _PokeListStoreBase with Store {
               sprites: response?.sprites,
               stats: response?.stats,
               types: response!.types));
-          listPokemon.sort((a, b) => a!.id!.toInt().compareTo(b!.id!.toInt()));
+          //listPokemon.sort((a, b) => a!.id!.toInt().compareTo(b!.id!.toInt()));
+          _listSearch = ObservableList<Details?>()..addAll(listPokemon);
         });
       }).onError((error, stackTrace) {
         print('erro: $error');

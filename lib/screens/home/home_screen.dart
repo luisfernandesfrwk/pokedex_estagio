@@ -2,6 +2,7 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:mobx/mobx.dart';
 import 'package:projeto_estagio/controller/pokelist_store.dart';
 import 'package:projeto_estagio/model/details_model.dart';
 import 'package:projeto_estagio/screens/home/widgets/search_header.dart';
@@ -19,7 +20,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final PokeListStore _pokeStore = PokeListStore();
-
+  final TextEditingController _textEditingController = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -43,7 +44,19 @@ class _HomeScreenState extends State<HomeScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            SearchHeader(),
+            Observer(
+              builder: (BuildContext context) {
+                return SearchHeader(
+                  controller: _textEditingController,
+                  onChanged: _pokeStore.setNewSearch,
+                  isChanged: _pokeStore.getSearch,
+                  onTap: () {
+                    _pokeStore.listSearch.clear();
+                    _pokeStore.setListSearch();
+                  },
+                );
+              },
+            ),
             Expanded(child: _buildList()),
           ],
         ),
@@ -66,10 +79,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisSpacing: 19,
                 crossAxisCount: 2,
               ),
-              itemCount: _pokeStore.listPokemon
-                  .length, //_pokeListStore.pokeList!.results.length,
+              itemCount: _pokeStore.listSearch.length,
               itemBuilder: (context, index) {
-                Details? details = _pokeStore.listPokemon[index];
+                Details? details = _pokeStore.listSearch[index];
 
                 var pokemonName = details?.name;
                 var typeName = details!.types[0].type.name;
@@ -92,9 +104,9 @@ class _HomeScreenState extends State<HomeScreen> {
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(
-              color: typeColor.withOpacity(0.3),
-              spreadRadius: 0.8,
-              blurRadius: 2,
+              color: typeColor.withOpacity(0.6),
+              spreadRadius: 0.1,
+              blurRadius: 3,
               offset: const Offset(0, 2),
             )
           ]),

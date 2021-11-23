@@ -23,10 +23,10 @@ class TypeWidget extends StatelessWidget {
         // ignore: prefer_const_literals_to_create_immutables
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: Colors.white.withOpacity(0.5),
             spreadRadius: 0.1,
-            blurRadius: 2,
-            offset: Offset(0, 2),
+            blurRadius: 1,
+            offset: Offset(0, 1.5),
           )
         ],
       ),
