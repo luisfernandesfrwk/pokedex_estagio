@@ -2,7 +2,7 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:mobx/mobx.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:projeto_estagio/controller/pokelist_store.dart';
 import 'package:projeto_estagio/model/details_model.dart';
 import 'package:projeto_estagio/screens/home/widgets/search_header.dart';
@@ -21,12 +21,25 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final PokeListStore _pokeStore = PokeListStore();
   final TextEditingController _textEditingController = TextEditingController();
+  static const _pageSize = 20;
+  final PagingController<int, Details?> _pagingController =
+      PagingController(firstPageKey: 0);
+
   @override
   void initState() {
+    _pagingController.addPageRequestListener((pageKey) {
+      _pokeStore.fetchPokemonUrl(pageKey);
+    });
     super.initState();
     if (_pokeStore.pokeUrl == null) {
-      _pokeStore.fetchPokemonUrl();
+      _pokeStore.fetchPokemonUrl(0);
     }
+  }
+
+  @override
+  void dispose() {
+    _pagingController.dispose();
+    super.dispose();
   }
 
   @override
@@ -48,11 +61,12 @@ class _HomeScreenState extends State<HomeScreen> {
               builder: (BuildContext context) {
                 return SearchHeader(
                   controller: _textEditingController,
-                  onChanged: _pokeStore.setNewSearch,
-                  isChanged: _pokeStore.getSearch,
+                  onChanged: _pokeStore.onChangedText,
+                  isEmpty: _pokeStore.isEmpty,
                   onTap: () {
                     _pokeStore.listSearch.clear();
-                    _pokeStore.setListSearch();
+                    _textEditingController.clear();
+                    _pokeStore.search = '';
                   },
                 );
               },
@@ -79,17 +93,24 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisSpacing: 19,
                 crossAxisCount: 2,
               ),
-              itemCount: _pokeStore.listSearch.length,
+              itemCount: (!_pokeStore.getSearch)
+                  ? _pokeStore.listPokemon.length
+                  : _pokeStore.listSearch.length,
               itemBuilder: (context, index) {
-                Details? details = _pokeStore.listSearch[index];
+                Details? details;
+                (!_pokeStore.getSearch)
+                    ? details = _pokeStore.listPokemon[index]
+                    : details = _pokeStore.listSearch[index];
 
                 var pokemonName = details?.name;
                 var typeName = details!.types[0].type.name;
 
                 return _card(details, pokemonName, typeName);
               })
-          : const Center(
-              child: CircularProgressIndicator(),
+          : Center(
+              child: CircularProgressIndicator(
+                color: ColorsUtil.primaryYellow,
+              ),
             );
     });
   }
@@ -116,6 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 FuncUtil.capitalize('$pokemonName'),

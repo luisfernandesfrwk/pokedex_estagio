@@ -16,6 +16,12 @@ mixin _$PokeListStore on _PokeListStoreBase, Store {
       (_$getSearchComputed ??= Computed<bool>(() => super.getSearch,
               name: '_PokeListStoreBase.getSearch'))
           .value;
+  Computed<bool>? _$isEmptyComputed;
+
+  @override
+  bool get isEmpty => (_$isEmptyComputed ??= Computed<bool>(() => super.isEmpty,
+          name: '_PokeListStoreBase.isEmpty'))
+      .value;
   Computed<ObservableList<Details?>>? _$listPokemonComputed;
 
   @override
@@ -45,18 +51,18 @@ mixin _$PokeListStore on _PokeListStoreBase, Store {
               name: '_PokeListStoreBase.pokeDetail'))
           .value;
 
-  final _$_searchAtom = Atom(name: '_PokeListStoreBase._search');
+  final _$searchAtom = Atom(name: '_PokeListStoreBase.search');
 
   @override
-  String get _search {
-    _$_searchAtom.reportRead();
-    return super._search;
+  String get search {
+    _$searchAtom.reportRead();
+    return super.search;
   }
 
   @override
-  set _search(String value) {
-    _$_searchAtom.reportWrite(value, super._search, () {
-      super._search = value;
+  set search(String value) {
+    _$searchAtom.reportWrite(value, super.search, () {
+      super.search = value;
     });
   }
 
@@ -135,22 +141,11 @@ mixin _$PokeListStore on _PokeListStoreBase, Store {
   }
 
   @override
-  void setListSearch() {
+  void onChangedText(String value) {
     final _$actionInfo = _$_PokeListStoreBaseActionController.startAction(
-        name: '_PokeListStoreBase.setListSearch');
+        name: '_PokeListStoreBase.onChangedText');
     try {
-      return super.setListSearch();
-    } finally {
-      _$_PokeListStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void setHomeList() {
-    final _$actionInfo = _$_PokeListStoreBaseActionController.startAction(
-        name: '_PokeListStoreBase.setHomeList');
-    try {
-      return super.setHomeList();
+      return super.onChangedText(value);
     } finally {
       _$_PokeListStoreBaseActionController.endAction(_$actionInfo);
     }
@@ -168,11 +163,11 @@ mixin _$PokeListStore on _PokeListStoreBase, Store {
   }
 
   @override
-  Future<dynamic> fetchPokemonUrl() {
+  Future<dynamic> fetchPokemonUrl(int page) {
     final _$actionInfo = _$_PokeListStoreBaseActionController.startAction(
         name: '_PokeListStoreBase.fetchPokemonUrl');
     try {
-      return super.fetchPokemonUrl();
+      return super.fetchPokemonUrl(page);
     } finally {
       _$_PokeListStoreBaseActionController.endAction(_$actionInfo);
     }
@@ -181,7 +176,9 @@ mixin _$PokeListStore on _PokeListStoreBase, Store {
   @override
   String toString() {
     return '''
+search: ${search},
 getSearch: ${getSearch},
+isEmpty: ${isEmpty},
 listPokemon: ${listPokemon},
 listSearch: ${listSearch},
 pokeUrl: ${pokeUrl},
