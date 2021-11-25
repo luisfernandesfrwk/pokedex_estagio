@@ -6,10 +6,10 @@ import 'package:projeto_estagio/utils/consts_util.dart';
 import 'package:projeto_estagio/utils/func_util.dart';
 
 class PokeApi {
-  Future<PokeList?> findAllPokemons(int page) async {
+  Future<PokeList?> findAllPokemons(int offset) async {
     try {
       final response =
-          await FuncUtil.getUrl('${Consts.baseUrl}?offset=${page}limit=20');
+          await FuncUtil.getUrl('${Consts.baseUrl}?offset=${offset}limit=20');
 
       return PokeList.fromMap(response.data);
     } catch (e) {

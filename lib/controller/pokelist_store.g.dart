@@ -9,12 +9,18 @@ part of 'pokelist_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$PokeListStore on _PokeListStoreBase, Store {
-  Computed<bool>? _$getSearchComputed;
+  Computed<bool>? _$endComputed;
 
   @override
-  bool get getSearch =>
-      (_$getSearchComputed ??= Computed<bool>(() => super.getSearch,
-              name: '_PokeListStoreBase.getSearch'))
+  bool get end => (_$endComputed ??=
+          Computed<bool>(() => super.end, name: '_PokeListStoreBase.end'))
+      .value;
+  Computed<bool>? _$isSearchValidComputed;
+
+  @override
+  bool get isSearchValid =>
+      (_$isSearchValidComputed ??= Computed<bool>(() => super.isSearchValid,
+              name: '_PokeListStoreBase.isSearchValid'))
           .value;
   Computed<bool>? _$isEmptyComputed;
 
@@ -50,6 +56,36 @@ mixin _$PokeListStore on _PokeListStoreBase, Store {
       (_$pokeDetailComputed ??= Computed<Details?>(() => super.pokeDetail,
               name: '_PokeListStoreBase.pokeDetail'))
           .value;
+
+  final _$_endOfListAtom = Atom(name: '_PokeListStoreBase._endOfList');
+
+  @override
+  bool get _endOfList {
+    _$_endOfListAtom.reportRead();
+    return super._endOfList;
+  }
+
+  @override
+  set _endOfList(bool value) {
+    _$_endOfListAtom.reportWrite(value, super._endOfList, () {
+      super._endOfList = value;
+    });
+  }
+
+  final _$_offsetAtom = Atom(name: '_PokeListStoreBase._offset');
+
+  @override
+  int get _offset {
+    _$_offsetAtom.reportRead();
+    return super._offset;
+  }
+
+  @override
+  set _offset(int value) {
+    _$_offsetAtom.reportWrite(value, super._offset, () {
+      super._offset = value;
+    });
+  }
 
   final _$searchAtom = Atom(name: '_PokeListStoreBase.search');
 
@@ -126,6 +162,13 @@ mixin _$PokeListStore on _PokeListStoreBase, Store {
     });
   }
 
+  final _$setOffsetAsyncAction = AsyncAction('_PokeListStoreBase.setOffset');
+
+  @override
+  Future<dynamic> setOffset() {
+    return _$setOffsetAsyncAction.run(() => super.setOffset());
+  }
+
   final _$_PokeListStoreBaseActionController =
       ActionController(name: '_PokeListStoreBase');
 
@@ -135,6 +178,17 @@ mixin _$PokeListStore on _PokeListStoreBase, Store {
         name: '_PokeListStoreBase.setNewSearch');
     try {
       return super.setNewSearch(value);
+    } finally {
+      _$_PokeListStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void clear(TextEditingController controller) {
+    final _$actionInfo = _$_PokeListStoreBaseActionController.startAction(
+        name: '_PokeListStoreBase.clear');
+    try {
+      return super.clear(controller);
     } finally {
       _$_PokeListStoreBaseActionController.endAction(_$actionInfo);
     }
@@ -163,11 +217,11 @@ mixin _$PokeListStore on _PokeListStoreBase, Store {
   }
 
   @override
-  Future<dynamic> fetchPokemonUrl(int page) {
+  Future<dynamic> fetchPokemonUrl(int offset) {
     final _$actionInfo = _$_PokeListStoreBaseActionController.startAction(
         name: '_PokeListStoreBase.fetchPokemonUrl');
     try {
-      return super.fetchPokemonUrl(page);
+      return super.fetchPokemonUrl(offset);
     } finally {
       _$_PokeListStoreBaseActionController.endAction(_$actionInfo);
     }
@@ -177,7 +231,8 @@ mixin _$PokeListStore on _PokeListStoreBase, Store {
   String toString() {
     return '''
 search: ${search},
-getSearch: ${getSearch},
+end: ${end},
+isSearchValid: ${isSearchValid},
 isEmpty: ${isEmpty},
 listPokemon: ${listPokemon},
 listSearch: ${listSearch},

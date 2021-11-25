@@ -2,13 +2,13 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:projeto_estagio/controller/pokelist_store.dart';
 import 'package:projeto_estagio/model/details_model.dart';
 import 'package:projeto_estagio/screens/home/widgets/search_header.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:projeto_estagio/utils/colors_util.dart';
 import 'package:projeto_estagio/utils/func_util.dart';
+import 'package:projeto_estagio/widgets/loading_widget.dart';
 import 'package:projeto_estagio/widgets/type_widget.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -21,25 +21,13 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final PokeListStore _pokeStore = PokeListStore();
   final TextEditingController _textEditingController = TextEditingController();
-  static const _pageSize = 20;
-  final PagingController<int, Details?> _pagingController =
-      PagingController(firstPageKey: 0);
 
   @override
   void initState() {
-    _pagingController.addPageRequestListener((pageKey) {
-      _pokeStore.fetchPokemonUrl(pageKey);
-    });
     super.initState();
     if (_pokeStore.pokeUrl == null) {
       _pokeStore.fetchPokemonUrl(0);
     }
-  }
-
-  @override
-  void dispose() {
-    _pagingController.dispose();
-    super.dispose();
   }
 
   @override
@@ -64,9 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   onChanged: _pokeStore.onChangedText,
                   isEmpty: _pokeStore.isEmpty,
                   onTap: () {
-                    _pokeStore.listSearch.clear();
-                    _textEditingController.clear();
-                    _pokeStore.search = '';
+                    _pokeStore.clear(_textEditingController);
                   },
                 );
               },
@@ -93,12 +79,24 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisSpacing: 19,
                 crossAxisCount: 2,
               ),
-              itemCount: (!_pokeStore.getSearch)
-                  ? _pokeStore.listPokemon.length
-                  : _pokeStore.listSearch.length,
+              itemCount: (!_pokeStore.isSearchValid)
+                  ? _pokeStore.listPokemon.length + 1
+                  : _pokeStore.listSearch.length + 1,
               itemBuilder: (context, index) {
+                if (index == _pokeStore.listPokemon.length &&
+                    !_pokeStore.isSearchValid &&
+                    _pokeStore.end == false) {
+                  _pokeStore.setOffset();
+                  return Loading();
+                }
+                if (index == _pokeStore.listSearch.length &&
+                    _pokeStore.isSearchValid) {
+                  _pokeStore.setOffset();
+                  return Loading();
+                }
+
                 Details? details;
-                (!_pokeStore.getSearch)
+                (!_pokeStore.isSearchValid)
                     ? details = _pokeStore.listPokemon[index]
                     : details = _pokeStore.listSearch[index];
 
@@ -107,11 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 return _card(details, pokemonName, typeName);
               })
-          : Center(
-              child: CircularProgressIndicator(
-                color: ColorsUtil.primaryYellow,
-              ),
-            );
+          : Loading();
     });
   }
 

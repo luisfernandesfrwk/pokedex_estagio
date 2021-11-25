@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_function_literals_in_foreach_calls, prefer_final_fields, unused_field
 
+import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:projeto_estagio/api/poke_api.dart';
 import 'package:projeto_estagio/model/details_model.dart';
@@ -10,6 +11,12 @@ class PokeListStore = _PokeListStoreBase with _$PokeListStore;
 
 abstract class _PokeListStoreBase with Store {
   final PokeApi _pokeApi = PokeApi();
+
+  @observable
+  bool _endOfList = false;
+
+  @observable
+  int _offset = 0;
 
   @observable
   String search = "";
@@ -27,7 +34,10 @@ abstract class _PokeListStoreBase with Store {
   PokeList? _pokemonsUrl;
 
   @computed
-  bool get getSearch => search.length > 3;
+  bool get end => _endOfList;
+
+  @computed
+  bool get isSearchValid => search.length > 3;
 
   @computed
   bool get isEmpty => search.isEmpty == true;
@@ -46,6 +56,13 @@ abstract class _PokeListStoreBase with Store {
 
   @action
   String setNewSearch(String value) => search = value;
+
+  @action
+  void clear(TextEditingController controller) {
+    _listSearch.clear();
+    search = '';
+    controller.clear();
+  }
 
   @action
   void onChangedText(String value) {
@@ -69,8 +86,8 @@ abstract class _PokeListStoreBase with Store {
       });
 
   @action
-  Future fetchPokemonUrl(int page) =>
-      _pokeApi.findAllPokemons(page).then((pokemons) {
+  Future fetchPokemonUrl(int offset) =>
+      _pokeApi.findAllPokemons(offset).then((pokemons) {
         _pokemonsUrl = pokemons;
         pokemons?.results.forEach((element) async {
           final response = await _pokeApi.findPokemon(url: element.url);
@@ -83,9 +100,19 @@ abstract class _PokeListStoreBase with Store {
               sprites: response?.sprites,
               stats: response?.stats,
               types: response!.types));
-          // listPokemon.sort((a, b) => a!.id!.toInt().compareTo(b!.id!.toInt()));
         });
       }).onError((error, stackTrace) {
         print('erro: $error');
       });
+
+  @action
+  Future setOffset() async {
+    _offset++;
+
+    if (_offset < 40) {
+      await fetchPokemonUrl(_offset * 20);
+    } else {
+      return;
+    }
+  }
 }
