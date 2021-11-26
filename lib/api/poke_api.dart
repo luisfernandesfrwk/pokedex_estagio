@@ -27,4 +27,15 @@ class PokeApi {
       return null;
     }
   }
+
+  Future<Details?> searchPokemon({required String name}) async {
+    try {
+      final response = await FuncUtil.getUrl(Consts.baseUrl + name);
+      print(response.statusCode);
+      return Details.fromMap(response.data);
+    } catch (e) {
+      print('error: $e');
+      return null;
+    }
+  }
 }

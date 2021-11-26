@@ -9,38 +9,12 @@ part of 'pokelist_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$PokeListStore on _PokeListStoreBase, Store {
-  Computed<bool>? _$endComputed;
-
-  @override
-  bool get end => (_$endComputed ??=
-          Computed<bool>(() => super.end, name: '_PokeListStoreBase.end'))
-      .value;
-  Computed<bool>? _$isSearchValidComputed;
-
-  @override
-  bool get isSearchValid =>
-      (_$isSearchValidComputed ??= Computed<bool>(() => super.isSearchValid,
-              name: '_PokeListStoreBase.isSearchValid'))
-          .value;
-  Computed<bool>? _$isEmptyComputed;
-
-  @override
-  bool get isEmpty => (_$isEmptyComputed ??= Computed<bool>(() => super.isEmpty,
-          name: '_PokeListStoreBase.isEmpty'))
-      .value;
   Computed<ObservableList<Details?>>? _$listPokemonComputed;
 
   @override
   ObservableList<Details?> get listPokemon => (_$listPokemonComputed ??=
           Computed<ObservableList<Details?>>(() => super.listPokemon,
               name: '_PokeListStoreBase.listPokemon'))
-      .value;
-  Computed<ObservableList<Details?>>? _$listSearchComputed;
-
-  @override
-  ObservableList<Details?> get listSearch => (_$listSearchComputed ??=
-          Computed<ObservableList<Details?>>(() => super.listSearch,
-              name: '_PokeListStoreBase.listSearch'))
       .value;
   Computed<PokeList?>? _$pokeUrlComputed;
 
@@ -56,19 +30,54 @@ mixin _$PokeListStore on _PokeListStoreBase, Store {
       (_$pokeDetailComputed ??= Computed<Details?>(() => super.pokeDetail,
               name: '_PokeListStoreBase.pokeDetail'))
           .value;
-
-  final _$_endOfListAtom = Atom(name: '_PokeListStoreBase._endOfList');
+  Computed<bool>? _$isSearchingComputed;
 
   @override
-  bool get _endOfList {
-    _$_endOfListAtom.reportRead();
-    return super._endOfList;
+  bool get isSearching =>
+      (_$isSearchingComputed ??= Computed<bool>(() => super.isSearching,
+              name: '_PokeListStoreBase.isSearching'))
+          .value;
+  Computed<bool>? _$isSearchValidComputed;
+
+  @override
+  bool get isSearchValid =>
+      (_$isSearchValidComputed ??= Computed<bool>(() => super.isSearchValid,
+              name: '_PokeListStoreBase.isSearchValid'))
+          .value;
+  Computed<bool>? _$isEmptyComputed;
+
+  @override
+  bool get isEmpty => (_$isEmptyComputed ??= Computed<bool>(() => super.isEmpty,
+          name: '_PokeListStoreBase.isEmpty'))
+      .value;
+
+  final _$_searchingAtom = Atom(name: '_PokeListStoreBase._searching');
+
+  @override
+  bool get _searching {
+    _$_searchingAtom.reportRead();
+    return super._searching;
   }
 
   @override
-  set _endOfList(bool value) {
-    _$_endOfListAtom.reportWrite(value, super._endOfList, () {
-      super._endOfList = value;
+  set _searching(bool value) {
+    _$_searchingAtom.reportWrite(value, super._searching, () {
+      super._searching = value;
+    });
+  }
+
+  final _$itemCountAtom = Atom(name: '_PokeListStoreBase.itemCount');
+
+  @override
+  int get itemCount {
+    _$itemCountAtom.reportRead();
+    return super.itemCount;
+  }
+
+  @override
+  set itemCount(int value) {
+    _$itemCountAtom.reportWrite(value, super.itemCount, () {
+      super.itemCount = value;
     });
   }
 
@@ -99,21 +108,6 @@ mixin _$PokeListStore on _PokeListStoreBase, Store {
   set search(String value) {
     _$searchAtom.reportWrite(value, super.search, () {
       super.search = value;
-    });
-  }
-
-  final _$_listSearchAtom = Atom(name: '_PokeListStoreBase._listSearch');
-
-  @override
-  ObservableList<Details?> get _listSearch {
-    _$_listSearchAtom.reportRead();
-    return super._listSearch;
-  }
-
-  @override
-  set _listSearch(ObservableList<Details?> value) {
-    _$_listSearchAtom.reportWrite(value, super._listSearch, () {
-      super._listSearch = value;
     });
   }
 
@@ -162,6 +156,14 @@ mixin _$PokeListStore on _PokeListStoreBase, Store {
     });
   }
 
+  final _$onTapSearchAsyncAction =
+      AsyncAction('_PokeListStoreBase.onTapSearch');
+
+  @override
+  Future<dynamic> onTapSearch(SnackBar snackBar) {
+    return _$onTapSearchAsyncAction.run(() => super.onTapSearch(snackBar));
+  }
+
   final _$setOffsetAsyncAction = AsyncAction('_PokeListStoreBase.setOffset');
 
   @override
@@ -184,22 +186,22 @@ mixin _$PokeListStore on _PokeListStoreBase, Store {
   }
 
   @override
-  void clear(TextEditingController controller) {
+  void onChangedText(String value) {
     final _$actionInfo = _$_PokeListStoreBaseActionController.startAction(
-        name: '_PokeListStoreBase.clear');
+        name: '_PokeListStoreBase.onChangedText');
     try {
-      return super.clear(controller);
+      return super.onChangedText(value);
     } finally {
       _$_PokeListStoreBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void onChangedText(String value) {
+  void onTapClear(TextEditingController controller) {
     final _$actionInfo = _$_PokeListStoreBaseActionController.startAction(
-        name: '_PokeListStoreBase.onChangedText');
+        name: '_PokeListStoreBase.onTapClear');
     try {
-      return super.onChangedText(value);
+      return super.onTapClear(controller);
     } finally {
       _$_PokeListStoreBaseActionController.endAction(_$actionInfo);
     }
@@ -228,16 +230,38 @@ mixin _$PokeListStore on _PokeListStoreBase, Store {
   }
 
   @override
+  int setItemCount() {
+    final _$actionInfo = _$_PokeListStoreBaseActionController.startAction(
+        name: '_PokeListStoreBase.setItemCount');
+    try {
+      return super.setItemCount();
+    } finally {
+      _$_PokeListStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  Details? setDetail(int index) {
+    final _$actionInfo = _$_PokeListStoreBaseActionController.startAction(
+        name: '_PokeListStoreBase.setDetail');
+    try {
+      return super.setDetail(index);
+    } finally {
+      _$_PokeListStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
+itemCount: ${itemCount},
 search: ${search},
-end: ${end},
-isSearchValid: ${isSearchValid},
-isEmpty: ${isEmpty},
 listPokemon: ${listPokemon},
-listSearch: ${listSearch},
 pokeUrl: ${pokeUrl},
-pokeDetail: ${pokeDetail}
+pokeDetail: ${pokeDetail},
+isSearching: ${isSearching},
+isSearchValid: ${isSearchValid},
+isEmpty: ${isEmpty}
     ''';
   }
 }

@@ -8,13 +8,15 @@ class SearchHeader extends StatefulWidget {
   SearchHeader(
       {Key? key,
       required this.controller,
-      required this.onTap,
+      required this.onTapClear,
+      required this.onTapSearch,
       required this.onChanged,
       required this.isEmpty})
       : super(key: key);
 
   final TextEditingController controller;
-  final VoidCallback onTap;
+  final VoidCallback onTapClear;
+  final VoidCallback onTapSearch;
   final Function(String) onChanged;
   final bool isEmpty;
 
@@ -37,7 +39,38 @@ class _SearchHeaderState extends State<SearchHeader> {
                 image: AssetImage(R.assetsPokemonLogo), fit: BoxFit.fill),
           ),
         ),
-        _textField(),
+        Row(
+          children: [
+            _textField(),
+            (widget.isEmpty)
+                ? SizedBox(
+                    width: 0.1,
+                    height: 0.1,
+                  )
+                : Container(
+                    width: 35,
+                    height: 35,
+                    margin: EdgeInsets.only(left: 5),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child: Material(
+                        color: ColorsUtil.primaryYellow,
+                        child: Padding(
+                          padding: EdgeInsets.only(right: 1),
+                          child: InkWell(
+                            child: Icon(
+                              Icons.backspace,
+                              size: 25,
+                              color: ColorsUtil.searchIcon,
+                            ),
+                            onTap: widget.onTapClear,
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+          ],
+        ),
       ],
     );
   }
@@ -46,6 +79,7 @@ class _SearchHeaderState extends State<SearchHeader> {
     return Container(
       padding: EdgeInsets.fromLTRB(32, 1, 15, 0),
       height: 50,
+      width: (widget.isEmpty) ? 350.9 : 310,
       margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
       decoration: BoxDecoration(
         boxShadow: [
@@ -85,16 +119,14 @@ class _SearchHeaderState extends State<SearchHeader> {
             child: Material(
               color: ColorsUtil.primaryYellow,
               child: Padding(
-                padding: (widget.isEmpty == true)
-                    ? EdgeInsets.zero
-                    : EdgeInsets.only(right: 2),
+                padding: EdgeInsets.zero,
                 child: InkWell(
                   child: Icon(
-                    (widget.isEmpty == true) ? Icons.search : Icons.backspace,
-                    size: (widget.isEmpty == true) ? 25 : 23,
+                    Icons.search,
+                    size: 25,
                     color: ColorsUtil.searchIcon,
                   ),
-                  onTap: widget.onTap,
+                  onTap: widget.onTapSearch,
                 ),
               ),
             ),

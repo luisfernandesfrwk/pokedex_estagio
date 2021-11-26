@@ -13,16 +13,16 @@ abstract class _PokeListStoreBase with Store {
   final PokeApi _pokeApi = PokeApi();
 
   @observable
-  bool _endOfList = false;
+  bool _searching = false;
+
+  @observable
+  int itemCount = 20;
 
   @observable
   int _offset = 0;
 
   @observable
   String search = "";
-
-  @observable
-  ObservableList<Details?> _listSearch = ObservableList<Details>();
 
   @observable
   ObservableList<Details?> _listPokemon = ObservableList<Details>();
@@ -34,19 +34,7 @@ abstract class _PokeListStoreBase with Store {
   PokeList? _pokemonsUrl;
 
   @computed
-  bool get end => _endOfList;
-
-  @computed
-  bool get isSearchValid => search.length > 3;
-
-  @computed
-  bool get isEmpty => search.isEmpty == true;
-
-  @computed
   ObservableList<Details?> get listPokemon => _listPokemon;
-
-  @computed
-  ObservableList<Details?> get listSearch => _listSearch;
 
   @computed
   PokeList? get pokeUrl => _pokemonsUrl;
@@ -54,26 +42,41 @@ abstract class _PokeListStoreBase with Store {
   @computed
   Details? get pokeDetail => _pokemonDetail;
 
+  @computed
+  bool get isSearching => _searching;
+
+  @computed
+  bool get isSearchValid => search.length > 3;
+
+  @computed
+  bool get isEmpty => search.isEmpty;
+
   @action
   String setNewSearch(String value) => search = value;
 
   @action
-  void clear(TextEditingController controller) {
-    _listSearch.clear();
+  void onChangedText(String value) => search = value;
+
+  @action
+  void onTapClear(TextEditingController controller) {
     search = '';
     controller.clear();
+    _searching = false;
   }
 
   @action
-  void onChangedText(String value) {
-    search = value;
-    if (search.length > 3) {
-      _listSearch.clear();
-      for (var pokemon in _listPokemon) {
-        if (pokemon!.name!.contains(search)) {
-          _listSearch.add(pokemon);
-        }
-      }
+  Future onTapSearch(SnackBar snackBar) async {
+    // print(search);
+    if (isSearchValid) {
+      _searching = true;
+      await _pokeApi
+          .searchPokemon(name: search)
+          .then((value) => _pokemonDetail = value)
+          .onError((error, stackTrace) {
+        print(error);
+      });
+    } else {
+      return snackBar;
     }
   }
 
@@ -113,6 +116,29 @@ abstract class _PokeListStoreBase with Store {
       await fetchPokemonUrl(_offset * 20);
     } else {
       return;
+    }
+  }
+
+  @action
+  int setItemCount() {
+    if (!isSearching) {
+      if (listPokemon.length < 800) {
+        itemCount = listPokemon.length + 1;
+      } else {
+        itemCount = listPokemon.length;
+      }
+    } else {
+      itemCount = 0;
+    }
+    return itemCount;
+  }
+
+  @action
+  Details? setDetail(int index) {
+    if (!isSearching) {
+      return listPokemon[index];
+    } else {
+      return pokeDetail;
     }
   }
 }

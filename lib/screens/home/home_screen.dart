@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, deprecated_member_use
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +21,15 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final PokeListStore _pokeStore = PokeListStore();
   final TextEditingController _textEditingController = TextEditingController();
+  final snackBar = SnackBar(
+    content: Text('Nome muito pequeno'),
+    duration: Duration(seconds: 3),
+    action: SnackBarAction(
+      label: 'Desfazer',
+      textColor: ColorsUtil.primaryYellow,
+      onPressed: () {},
+    ),
+  );
 
   @override
   void initState() {
@@ -48,13 +57,17 @@ class _HomeScreenState extends State<HomeScreen> {
             Observer(
               builder: (BuildContext context) {
                 return SearchHeader(
-                  controller: _textEditingController,
-                  onChanged: _pokeStore.onChangedText,
-                  isEmpty: _pokeStore.isEmpty,
-                  onTap: () {
-                    _pokeStore.clear(_textEditingController);
-                  },
-                );
+                    controller: _textEditingController,
+                    onChanged: _pokeStore.onChangedText,
+                    isEmpty: _pokeStore.isEmpty,
+                    onTapClear: () =>
+                        _pokeStore.onTapClear(_textEditingController),
+                    onTapSearch: () {
+                      _pokeStore.onTapSearch(snackBar);
+                      if (!_pokeStore.isSearchValid) {
+                        Scaffold.of(context).showSnackBar(snackBar);
+                      }
+                    });
               },
             ),
             Expanded(child: _buildList()),
@@ -79,34 +92,29 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisSpacing: 19,
                 crossAxisCount: 2,
               ),
-              itemCount: (!_pokeStore.isSearchValid)
-                  ? _pokeStore.listPokemon.length + 1
-                  : _pokeStore.listSearch.length + 1,
+              itemCount: _pokeStore.setItemCount(),
               itemBuilder: (context, index) {
-                if (index == _pokeStore.listPokemon.length &&
-                    !_pokeStore.isSearchValid &&
-                    _pokeStore.end == false) {
-                  _pokeStore.setOffset();
-                  return Loading();
-                }
-                if (index == _pokeStore.listSearch.length &&
-                    _pokeStore.isSearchValid) {
-                  _pokeStore.setOffset();
-                  return Loading();
-                }
-
-                Details? details;
-                (!_pokeStore.isSearchValid)
-                    ? details = _pokeStore.listPokemon[index]
-                    : details = _pokeStore.listSearch[index];
-
-                var pokemonName = details?.name;
-                var typeName = details!.types[0].type.name;
-
-                return _card(details, pokemonName, typeName);
+                return _setScreen(index);
               })
           : Loading();
     });
+  }
+
+  Widget _setScreen(int index) {
+    if (index == _pokeStore.listPokemon.length &&
+        _pokeStore.listPokemon.length < 800) {
+      _pokeStore.setOffset();
+      return Loading();
+    }
+    // Details? details = _pokeStore.listPokemon[index];
+    // if (_pokeStore.isSearching) {
+    //   details = _pokeStore.pokeDetail;
+    // } else {
+    //   details = _pokeStore.listPokemon[index];
+    // }
+    Details? details = _pokeStore.setDetail(index);
+
+    return _card(details, details?.name, details!.types[0].type.name);
   }
 
   Container _card(Details? details, String? pokemonName, String typeName) {
