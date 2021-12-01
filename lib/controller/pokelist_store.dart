@@ -13,6 +13,9 @@ abstract class _PokeListStoreBase with Store {
   final PokeApi _pokeApi = PokeApi();
 
   @observable
+  int _statusCode = 200;
+
+  @observable
   bool _searching = false;
 
   @observable
@@ -31,13 +34,16 @@ abstract class _PokeListStoreBase with Store {
   Details? _pokemonDetail;
 
   @observable
-  PokeList? _pokemonsUrl;
+  PokeUrl? _pokemonsUrl;
+
+  @computed
+  int get status => _statusCode;
 
   @computed
   ObservableList<Details?> get listPokemon => _listPokemon;
 
   @computed
-  PokeList? get pokeUrl => _pokemonsUrl;
+  PokeUrl? get pokeUrl => _pokemonsUrl;
 
   @computed
   Details? get pokeDetail => _pokemonDetail;
@@ -52,37 +58,45 @@ abstract class _PokeListStoreBase with Store {
   bool get isEmpty => search.isEmpty;
 
   @action
-  String setNewSearch(String value) => search = value;
+  void setStatusCode(int code) => _statusCode = code;
 
   @action
   void onChangedText(String value) => search = value;
 
   @action
   void onTapClear(TextEditingController controller) {
+    setStatusCode(200);
     search = '';
+    _offset = 0;
     controller.clear();
+    _listPokemon.clear();
+    fetchPokemonUrl(_offset);
+    setItemCount();
     _searching = false;
   }
 
   @action
   Future onTapSearch(SnackBar snackBar) async {
-    // print(search);
     if (isSearchValid) {
+      _listPokemon.clear();
       _searching = true;
-      await _pokeApi
-          .searchPokemon(name: search)
-          .then((value) => _pokemonDetail = value)
-          .onError((error, stackTrace) {
-        print(error);
-      });
+      final response = await fetchPokemonDetail(name: search.trim());
+
+      if (response != null) {
+        setStatusCode(200);
+        listPokemon.add(response);
+        setItemCount();
+      } else {
+        setStatusCode(404);
+      }
     } else {
       return snackBar;
     }
   }
 
   @action
-  Future fetchPokemonDetail({required String url}) => _pokeApi
-          .findPokemon(url: url)
+  Future fetchPokemonDetail({required String name}) => _pokeApi
+          .searchPokemon(name: name)
           .then((details) => _pokemonDetail = details)
           .onError((error, stackTrace) {
         print(error);
@@ -90,19 +104,11 @@ abstract class _PokeListStoreBase with Store {
 
   @action
   Future fetchPokemonUrl(int offset) =>
-      _pokeApi.findAllPokemons(offset).then((pokemons) {
+      _pokeApi.findAllUrl(name: '?offset=${offset}limit=20').then((pokemons) {
         _pokemonsUrl = pokemons;
         pokemons?.results.forEach((element) async {
           final response = await _pokeApi.findPokemon(url: element.url);
-          listPokemon.add(Details(
-              abilities: response?.abilities,
-              id: response?.id,
-              moves: response?.moves,
-              name: response?.name,
-              order: response?.order,
-              sprites: response?.sprites,
-              stats: response?.stats,
-              types: response!.types));
+          listPokemon.add(response);
         });
       }).onError((error, stackTrace) {
         print('erro: $error');
@@ -128,17 +134,17 @@ abstract class _PokeListStoreBase with Store {
         itemCount = listPokemon.length;
       }
     } else {
-      itemCount = 0;
+      itemCount = 1;
     }
     return itemCount;
   }
 
   @action
-  Details? setDetail(int index) {
-    if (!isSearching) {
-      return listPokemon[index];
-    } else {
-      return pokeDetail;
+  bool canSetOffset(int index) {
+    if (index == listPokemon.length && listPokemon.length < 800) {
+      setOffset();
+      return true;
     }
+    return false;
   }
 }

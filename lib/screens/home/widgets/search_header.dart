@@ -36,7 +36,7 @@ class _SearchHeaderState extends State<SearchHeader> {
           alignment: Alignment.center,
           decoration: BoxDecoration(
             image: DecorationImage(
-                image: AssetImage(R.assetsPokemonLogo), fit: BoxFit.fill),
+                image: AssetImage(R.assetsLogo), fit: BoxFit.fill),
           ),
         ),
         Row(
@@ -50,24 +50,14 @@ class _SearchHeaderState extends State<SearchHeader> {
                 : Container(
                     width: 35,
                     height: 35,
-                    margin: EdgeInsets.only(left: 5),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(100),
-                      child: Material(
-                        color: ColorsUtil.primaryYellow,
-                        child: Padding(
-                          padding: EdgeInsets.only(right: 1),
-                          child: InkWell(
-                            child: Icon(
-                              Icons.backspace,
-                              size: 25,
-                              color: ColorsUtil.searchIcon,
-                            ),
-                            onTap: widget.onTapClear,
-                          ),
-                        ),
-                      ),
-                    ),
+                    margin: EdgeInsets.only(left: 3),
+                    child: _customIcon(
+                        ColorsUtil.textFieldBackground,
+                        ColorsUtil.primaryYellow,
+                        Icons.backspace,
+                        widget.onTapClear,
+                        EdgeInsets.only(right: 3),
+                        25),
                   )
           ],
         ),
@@ -79,7 +69,7 @@ class _SearchHeaderState extends State<SearchHeader> {
     return Container(
       padding: EdgeInsets.fromLTRB(32, 1, 15, 0),
       height: 50,
-      width: (widget.isEmpty) ? 350.9 : 310,
+      width: (widget.isEmpty) ? 350.9 : 314,
       margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
       decoration: BoxDecoration(
         boxShadow: [
@@ -114,22 +104,39 @@ class _SearchHeaderState extends State<SearchHeader> {
             width: 35,
             height: 35,
           ),
-          suffixIcon: ClipRRect(
-            borderRadius: BorderRadius.circular(100),
-            child: Material(
-              color: ColorsUtil.primaryYellow,
-              child: Padding(
-                padding: EdgeInsets.zero,
-                child: InkWell(
-                  child: Icon(
-                    Icons.search,
-                    size: 25,
-                    color: ColorsUtil.searchIcon,
-                  ),
-                  onTap: widget.onTapSearch,
-                ),
-              ),
+          suffixIcon: _customIcon(
+              ColorsUtil.primaryYellow,
+              ColorsUtil.searchIcon,
+              Icons.search,
+              widget.onTapSearch,
+              EdgeInsets.zero,
+              24),
+        ),
+      ),
+    );
+  }
+
+  ClipRRect _customIcon(
+    Color backgroundColor,
+    Color iconColor,
+    IconData icon,
+    VoidCallback onTap,
+    EdgeInsets padding,
+    double size,
+  ) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(100),
+      child: Material(
+        color: backgroundColor,
+        child: Padding(
+          padding: padding,
+          child: InkWell(
+            child: Icon(
+              icon,
+              size: size,
+              color: iconColor,
             ),
+            onTap: onTap,
           ),
         ),
       ),

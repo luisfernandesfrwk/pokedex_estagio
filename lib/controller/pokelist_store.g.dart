@@ -9,6 +9,12 @@ part of 'pokelist_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$PokeListStore on _PokeListStoreBase, Store {
+  Computed<int>? _$statusComputed;
+
+  @override
+  int get status => (_$statusComputed ??=
+          Computed<int>(() => super.status, name: '_PokeListStoreBase.status'))
+      .value;
   Computed<ObservableList<Details?>>? _$listPokemonComputed;
 
   @override
@@ -16,11 +22,11 @@ mixin _$PokeListStore on _PokeListStoreBase, Store {
           Computed<ObservableList<Details?>>(() => super.listPokemon,
               name: '_PokeListStoreBase.listPokemon'))
       .value;
-  Computed<PokeList?>? _$pokeUrlComputed;
+  Computed<PokeUrl?>? _$pokeUrlComputed;
 
   @override
-  PokeList? get pokeUrl =>
-      (_$pokeUrlComputed ??= Computed<PokeList?>(() => super.pokeUrl,
+  PokeUrl? get pokeUrl =>
+      (_$pokeUrlComputed ??= Computed<PokeUrl?>(() => super.pokeUrl,
               name: '_PokeListStoreBase.pokeUrl'))
           .value;
   Computed<Details?>? _$pokeDetailComputed;
@@ -50,6 +56,21 @@ mixin _$PokeListStore on _PokeListStoreBase, Store {
   bool get isEmpty => (_$isEmptyComputed ??= Computed<bool>(() => super.isEmpty,
           name: '_PokeListStoreBase.isEmpty'))
       .value;
+
+  final _$_statusCodeAtom = Atom(name: '_PokeListStoreBase._statusCode');
+
+  @override
+  int get _statusCode {
+    _$_statusCodeAtom.reportRead();
+    return super._statusCode;
+  }
+
+  @override
+  set _statusCode(int value) {
+    _$_statusCodeAtom.reportWrite(value, super._statusCode, () {
+      super._statusCode = value;
+    });
+  }
 
   final _$_searchingAtom = Atom(name: '_PokeListStoreBase._searching');
 
@@ -144,13 +165,13 @@ mixin _$PokeListStore on _PokeListStoreBase, Store {
   final _$_pokemonsUrlAtom = Atom(name: '_PokeListStoreBase._pokemonsUrl');
 
   @override
-  PokeList? get _pokemonsUrl {
+  PokeUrl? get _pokemonsUrl {
     _$_pokemonsUrlAtom.reportRead();
     return super._pokemonsUrl;
   }
 
   @override
-  set _pokemonsUrl(PokeList? value) {
+  set _pokemonsUrl(PokeUrl? value) {
     _$_pokemonsUrlAtom.reportWrite(value, super._pokemonsUrl, () {
       super._pokemonsUrl = value;
     });
@@ -175,11 +196,11 @@ mixin _$PokeListStore on _PokeListStoreBase, Store {
       ActionController(name: '_PokeListStoreBase');
 
   @override
-  String setNewSearch(String value) {
+  void setStatusCode(int code) {
     final _$actionInfo = _$_PokeListStoreBaseActionController.startAction(
-        name: '_PokeListStoreBase.setNewSearch');
+        name: '_PokeListStoreBase.setStatusCode');
     try {
-      return super.setNewSearch(value);
+      return super.setStatusCode(code);
     } finally {
       _$_PokeListStoreBaseActionController.endAction(_$actionInfo);
     }
@@ -208,11 +229,11 @@ mixin _$PokeListStore on _PokeListStoreBase, Store {
   }
 
   @override
-  Future<dynamic> fetchPokemonDetail({required String url}) {
+  Future<dynamic> fetchPokemonDetail({required String name}) {
     final _$actionInfo = _$_PokeListStoreBaseActionController.startAction(
         name: '_PokeListStoreBase.fetchPokemonDetail');
     try {
-      return super.fetchPokemonDetail(url: url);
+      return super.fetchPokemonDetail(name: name);
     } finally {
       _$_PokeListStoreBaseActionController.endAction(_$actionInfo);
     }
@@ -241,11 +262,11 @@ mixin _$PokeListStore on _PokeListStoreBase, Store {
   }
 
   @override
-  Details? setDetail(int index) {
+  bool canSetOffset(int index) {
     final _$actionInfo = _$_PokeListStoreBaseActionController.startAction(
-        name: '_PokeListStoreBase.setDetail');
+        name: '_PokeListStoreBase.canSetOffset');
     try {
-      return super.setDetail(index);
+      return super.canSetOffset(index);
     } finally {
       _$_PokeListStoreBaseActionController.endAction(_$actionInfo);
     }
@@ -256,6 +277,7 @@ mixin _$PokeListStore on _PokeListStoreBase, Store {
     return '''
 itemCount: ${itemCount},
 search: ${search},
+status: ${status},
 listPokemon: ${listPokemon},
 pokeUrl: ${pokeUrl},
 pokeDetail: ${pokeDetail},

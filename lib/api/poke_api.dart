@@ -6,12 +6,11 @@ import 'package:projeto_estagio/utils/consts_util.dart';
 import 'package:projeto_estagio/utils/func_util.dart';
 
 class PokeApi {
-  Future<PokeList?> findAllPokemons(int offset) async {
+  Future<PokeUrl?> findAllUrl({String name = ''}) async {
     try {
-      final response =
-          await FuncUtil.getUrl('${Consts.baseUrl}?offset=${offset}limit=20');
-
-      return PokeList.fromMap(response.data);
+      String url = Consts.baseUrl + name;
+      final response = await FuncUtil.getPokemon(url);
+      return PokeUrl.fromMap(response.data);
     } catch (e) {
       print('error: $e');
       return null;
@@ -20,7 +19,7 @@ class PokeApi {
 
   Future<Details?> findPokemon({required String url}) async {
     try {
-      final response = await FuncUtil.getUrl(url);
+      final response = await FuncUtil.getPokemon(url);
       return Details.fromMap(response.data);
     } catch (e) {
       print('error: $e');
@@ -30,7 +29,8 @@ class PokeApi {
 
   Future<Details?> searchPokemon({required String name}) async {
     try {
-      final response = await FuncUtil.getUrl(Consts.baseUrl + name);
+      final response = await FuncUtil.getPokemon(Consts.baseUrl + name);
+
       print(response.statusCode);
       return Details.fromMap(response.data);
     } catch (e) {

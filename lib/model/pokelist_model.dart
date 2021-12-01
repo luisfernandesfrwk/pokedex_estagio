@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-class PokeList {
-  PokeList({
+class PokeUrl {
+  PokeUrl({
     required this.count,
     required this.results,
   });
@@ -9,9 +9,9 @@ class PokeList {
   final int count;
   final List<Result> results;
 
-  factory PokeList.fromJson(String str) => PokeList.fromMap(json.decode(str));
+  factory PokeUrl.fromJson(String str) => PokeUrl.fromMap(json.decode(str));
 
-  factory PokeList.fromMap(Map<String, dynamic> json) => PokeList(
+  factory PokeUrl.fromMap(Map<String, dynamic> json) => PokeUrl(
         count: json["count"],
         results:
             List<Result>.from(json["results"].map((x) => Result.fromMap(x))),

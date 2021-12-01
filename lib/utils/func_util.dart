@@ -7,5 +7,6 @@ class FuncUtil {
     return 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/$indexPokemon.png';
   }
 
-  static Future<Response<dynamic>> getUrl(String url) => Dio().get(url);
+  static Future<Response<dynamic>> getPokemon(String url) async =>
+      await Dio().get(url);
 }
