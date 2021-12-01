@@ -83,17 +83,14 @@ class Move {
 
 class Sprites {
   Sprites({
-    required this.frontDefault,
     required this.other,
   });
 
-  String frontDefault;
   Other? other;
 
   factory Sprites.fromJson(String str) => Sprites.fromMap(json.decode(str));
 
   factory Sprites.fromMap(Map<String, dynamic> json) => Sprites(
-      frontDefault: json["front_default"],
       other: json["other"] == null ? null : Other.fromMap(json["other"]));
 }
 

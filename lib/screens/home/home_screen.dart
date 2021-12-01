@@ -71,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Scaffold.of(context).showSnackBar(snackBar);
                     }
                   }),
-              (_pokeStore.status == 200) ? _buildList() : _errorScreen(),
+              (_pokeStore.status == 200) ? _buildList() : _errorWidget(),
             ],
           );
         }),
@@ -107,9 +107,8 @@ class _HomeScreenState extends State<HomeScreen> {
             : Loading());
   }
 
-  Expanded _errorScreen() {
+  Expanded _errorWidget() {
     return Expanded(
-      flex: 1,
       child: Container(
         // height: 630,
         padding: EdgeInsets.only(top: 125),
@@ -178,7 +177,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(
                   height: 14,
                 ),
-                TypeWidget(typeName: typeName),
+                TypeWidget(
+                  typeName: typeName,
+                  width: 21,
+                  height: 64,
+                  fontSize: 10,
+                ),
               ],
             ),
             Positioned(

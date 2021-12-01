@@ -66,6 +66,9 @@ flutter:
   assets:
     # assets-generator-begin
     # assets/*
+    - assets/attackstat.png
+    - assets/deffensestat.png
+    - assets/hpstat.png
     - assets/logo.png
     - assets/pokeballError.png
     # assets-generator-end

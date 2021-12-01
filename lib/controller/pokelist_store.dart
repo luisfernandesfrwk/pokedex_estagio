@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_function_literals_in_foreach_calls, prefer_final_fields, unused_field
+// ignore_for_file: avoid_function_literals_in_foreach_calls, prefer_final_fields, unused_field, avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
