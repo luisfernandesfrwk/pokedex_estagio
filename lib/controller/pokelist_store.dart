@@ -13,9 +13,6 @@ abstract class _PokeListStoreBase with Store {
   final PokeApi _pokeApi = PokeApi();
 
   @observable
-  int _statusCode = 200;
-
-  @observable
   bool _searching = false;
 
   @observable
@@ -37,9 +34,6 @@ abstract class _PokeListStoreBase with Store {
   PokeUrl? _pokemonsUrl;
 
   @computed
-  int get status => _statusCode;
-
-  @computed
   ObservableList<Details?> get listPokemon => _listPokemon;
 
   @computed
@@ -58,14 +52,10 @@ abstract class _PokeListStoreBase with Store {
   bool get isEmpty => search.isEmpty;
 
   @action
-  void setStatusCode(int code) => _statusCode = code;
-
-  @action
   void onChangedText(String value) => search = value;
 
   @action
   void onTapClear(TextEditingController controller) {
-    setStatusCode(200);
     search = '';
     _offset = 0;
     controller.clear();
@@ -82,13 +72,8 @@ abstract class _PokeListStoreBase with Store {
       _searching = true;
       final response = await fetchPokemonDetail(name: search.trim());
 
-      if (response != null) {
-        setStatusCode(200);
-        listPokemon.add(response);
-        setItemCount();
-      } else {
-        setStatusCode(404);
-      }
+      listPokemon.add(response);
+      setItemCount();
     } else {
       return snackBar;
     }
@@ -118,7 +103,7 @@ abstract class _PokeListStoreBase with Store {
   Future setOffset() async {
     _offset++;
 
-    if (_offset < 40) {
+    if (_offset < 55) {
       await fetchPokemonUrl(_offset * 20);
     } else {
       return;
@@ -128,7 +113,7 @@ abstract class _PokeListStoreBase with Store {
   @action
   int setItemCount() {
     if (!isSearching) {
-      if (listPokemon.length < 800) {
+      if (listPokemon.length < 1100) {
         itemCount = listPokemon.length + 1;
       } else {
         itemCount = listPokemon.length;
@@ -141,7 +126,7 @@ abstract class _PokeListStoreBase with Store {
 
   @action
   bool canSetOffset(int index) {
-    if (index == listPokemon.length && listPokemon.length < 800) {
+    if (index == listPokemon.length && listPokemon.length < 1100) {
       setOffset();
       return true;
     }

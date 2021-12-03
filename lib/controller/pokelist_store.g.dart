@@ -9,12 +9,6 @@ part of 'pokelist_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$PokeListStore on _PokeListStoreBase, Store {
-  Computed<int>? _$statusComputed;
-
-  @override
-  int get status => (_$statusComputed ??=
-          Computed<int>(() => super.status, name: '_PokeListStoreBase.status'))
-      .value;
   Computed<ObservableList<Details?>>? _$listPokemonComputed;
 
   @override
@@ -56,21 +50,6 @@ mixin _$PokeListStore on _PokeListStoreBase, Store {
   bool get isEmpty => (_$isEmptyComputed ??= Computed<bool>(() => super.isEmpty,
           name: '_PokeListStoreBase.isEmpty'))
       .value;
-
-  final _$_statusCodeAtom = Atom(name: '_PokeListStoreBase._statusCode');
-
-  @override
-  int get _statusCode {
-    _$_statusCodeAtom.reportRead();
-    return super._statusCode;
-  }
-
-  @override
-  set _statusCode(int value) {
-    _$_statusCodeAtom.reportWrite(value, super._statusCode, () {
-      super._statusCode = value;
-    });
-  }
 
   final _$_searchingAtom = Atom(name: '_PokeListStoreBase._searching');
 
@@ -196,17 +175,6 @@ mixin _$PokeListStore on _PokeListStoreBase, Store {
       ActionController(name: '_PokeListStoreBase');
 
   @override
-  void setStatusCode(int code) {
-    final _$actionInfo = _$_PokeListStoreBaseActionController.startAction(
-        name: '_PokeListStoreBase.setStatusCode');
-    try {
-      return super.setStatusCode(code);
-    } finally {
-      _$_PokeListStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   void onChangedText(String value) {
     final _$actionInfo = _$_PokeListStoreBaseActionController.startAction(
         name: '_PokeListStoreBase.onChangedText');
@@ -277,7 +245,6 @@ mixin _$PokeListStore on _PokeListStoreBase, Store {
     return '''
 itemCount: ${itemCount},
 search: ${search},
-status: ${status},
 listPokemon: ${listPokemon},
 pokeUrl: ${pokeUrl},
 pokeDetail: ${pokeDetail},

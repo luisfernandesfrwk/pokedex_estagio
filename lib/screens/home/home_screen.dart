@@ -4,7 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:projeto_estagio/controller/pokelist_store.dart';
 import 'package:projeto_estagio/model/details_model.dart';
-import 'package:projeto_estagio/screens/detail_screen.dart';
+import 'package:projeto_estagio/screens/detail/detail_screen.dart';
 import 'package:projeto_estagio/screens/home/widgets/search_header.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:projeto_estagio/utils/colors_util.dart';
@@ -71,7 +71,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       Scaffold.of(context).showSnackBar(snackBar);
                     }
                   }),
-              (_pokeStore.status == 200) ? _buildList() : _errorWidget(),
+              (_pokeStore.listPokemon.isNotEmpty)
+                  ? _buildList()
+                  : _errorWidget(),
             ],
           );
         }),
@@ -128,8 +130,8 @@ class _HomeScreenState extends State<HomeScreen> {
               width: 151,
               height: 151,
               decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage(R.assetsPokeballError), fit: BoxFit.fill),
+                image:
+                    DecorationImage(image: AssetImage(R.assetsPokeballError)),
               ),
             ),
           ],
@@ -142,8 +144,11 @@ class _HomeScreenState extends State<HomeScreen> {
     final typeColor = ColorsUtil.getColorByType(type: typeName);
     return InkWell(
       onTap: () {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => DetailScreen()));
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => DetailScreen(
+                pokemon: details,
+                image: details!.sprites!.other!.officialArtwork.frontDefault,
+                typeName: typeName)));
       },
       child: Container(
         padding: EdgeInsets.fromLTRB(11, 0, 0, 0),
@@ -188,12 +193,16 @@ class _HomeScreenState extends State<HomeScreen> {
             Positioned(
               top: 5,
               right: -11,
-              child: CachedNetworkImage(
-                imageUrl: details!.sprites!.other!.officialArtwork.frontDefault,
-                alignment: Alignment.topRight,
-                fit: BoxFit.cover,
-                width: 81,
-                height: 81,
+              child: Hero(
+                tag: 'pokemon-img-$pokemonName',
+                child: CachedNetworkImage(
+                  imageUrl:
+                      details!.sprites!.other!.officialArtwork.frontDefault,
+                  alignment: Alignment.topRight,
+                  fit: BoxFit.cover,
+                  width: 81,
+                  height: 81,
+                ),
               ),
             ),
           ],

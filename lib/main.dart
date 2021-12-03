@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:projeto_estagio/screens/detail/detail_screen.dart';
 import 'package:projeto_estagio/screens/home/home_screen.dart';
 import 'package:projeto_estagio/utils/colors_util.dart';
 

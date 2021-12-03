@@ -37,6 +37,7 @@ dependencies:
   mobx: ^2.0.5
   dio:
   cached_network_image: ^3.1.0+1
+  flutter_svg:
 
 dev_dependencies:
   flutter_test:
@@ -66,11 +67,33 @@ flutter:
   assets:
     # assets-generator-begin
     # assets/*
-    - assets/attackstat.png
-    - assets/deffensestat.png
+    - assets/atkstat.png
+    - assets/bug.svg
+    - assets/dark.svg
+    - assets/deffstat.png
+    - assets/dragon.svg
+    - assets/electric.svg
+    - assets/fairy.svg
+    - assets/fighting.svg
+    - assets/fire.svg
+    - assets/flying.svg
+    - assets/ghost.svg
+    - assets/grass.svg
+    - assets/ground.svg
     - assets/hpstat.png
+    - assets/ice.svg
     - assets/logo.png
+    - assets/normal.svg
+    - assets/poison.svg
     - assets/pokeballError.png
+    - assets/psychic.svg
+    - assets/rock.svg
+    - assets/shadow.svg
+    - assets/steel.svg
+    - assets/swords.png
+    - assets/unknown.svg
+    - assets/warning.svg
+    - assets/water.svg
     # assets-generator-end
 
   # An image asset can refer to one or more resolution-specific "variants", see
