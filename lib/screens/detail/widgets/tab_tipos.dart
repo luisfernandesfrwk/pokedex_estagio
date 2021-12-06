@@ -1,17 +1,24 @@
 // ignore_for_file: prefer_const_constructors, sized_box_for_whitespace
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:projeto_estagio/model/details_model.dart';
+import 'package:projeto_estagio/model/typedetailed_model.dart';
 import 'package:projeto_estagio/r.dart';
 import 'package:projeto_estagio/utils/colors_util.dart';
-import 'package:projeto_estagio/utils/svg_util.dart';
+import 'package:projeto_estagio/utils/png_util.dart';
 import 'package:projeto_estagio/widgets/type_widget.dart';
 
 class TabTipos extends StatelessWidget {
-  const TabTipos({Key? key, required this.type}) : super(key: key);
+  const TabTipos(
+      {Key? key,
+      required this.type,
+      required this.color,
+      required this.typeDetailed})
+      : super(key: key);
 
   final List<Type> type;
+  final Color color;
+  final List<TypeDetailed?> typeDetailed;
 
   @override
   Widget build(BuildContext context) {
@@ -49,30 +56,16 @@ class TabTipos extends StatelessWidget {
                     children: [
                       _tileAtkDef(
                         Colors.white,
-                        ColorsUtil.electricType,
                         Colors.white,
                         'Ataque',
                         R.assetsSwords,
                       ),
-                      Container(
-                        margin: EdgeInsets.only(top: 31),
-                        color: Colors.red,
-                        height: 56,
-                        width: 150,
-                        child: Text('Dobro de dano'),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(top: 31),
-                        color: Colors.pink,
-                        height: 56,
-                        width: 150,
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(top: 31),
-                        color: Colors.blue,
-                        height: 56,
-                        width: 150,
-                      ),
+                      _buildList('Dobro do dano em',
+                          typeDetailed[0]?.damageRelations?.doubleDamageTo),
+                      _buildList('Metade do danoem',
+                          typeDetailed[0]?.damageRelations?.halfDamageTo),
+                      _buildList('Nenhum danoem',
+                          typeDetailed[0]?.damageRelations?.noDamageTo)
                     ],
                   ),
                 ),
@@ -91,11 +84,16 @@ class TabTipos extends StatelessWidget {
                     children: [
                       _tileAtkDef(
                         ColorsUtil.appBackground,
-                        ColorsUtil.electricType,
-                        ColorsUtil.appBackground,
+                        Colors.black,
                         'Defesa',
                         R.assetsDeffstat,
-                      )
+                      ),
+                      _buildList('Dobro do dano de',
+                          typeDetailed[0]?.damageRelations?.doubleDamageFrom),
+                      _buildList('Metade do dano de',
+                          typeDetailed[0]?.damageRelations?.doubleDamageFrom),
+                      _buildList('Nenhum dano de',
+                          typeDetailed[0]?.damageRelations?.noDamageFrom)
                     ],
                   ),
                 )
@@ -107,14 +105,48 @@ class TabTipos extends StatelessWidget {
     );
   }
 
-  Container _tileAtkDef(Color backgroundImage, Color backgroundColor,
-      Color textColor, String text, String image) {
+  Container _buildList(String texto, List<Generation>? typeDetailed) {
+    return Container(
+      margin: EdgeInsets.only(top: 31),
+      height: 56,
+      width: 150,
+      child: Column(
+        children: [
+          Text(
+            'Dobro de dano',
+            style: TextStyle(
+                color: Colors.white, fontWeight: FontWeight.w900, fontSize: 14),
+          ),
+          SizedBox(
+            height: 7,
+          ),
+          SizedBox(
+            height: 34,
+            child: ListView.builder(
+              itemExtent: 70,
+              scrollDirection: Axis.horizontal,
+              itemCount: (typeDetailed!.length > 1) ? typeDetailed.length : 1,
+              itemBuilder: (context, index) {
+                return PngTypeUtil.getPngType(
+                    name: (typeDetailed.length > 1)
+                        ? typeDetailed[index].name.toString()
+                        : 'warning');
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Container _tileAtkDef(
+      Color backgroundImage, Color textColor, String text, String image) {
     return Container(
       padding: EdgeInsets.all(2),
       width: 130,
       height: 33,
-      decoration: BoxDecoration(
-          color: backgroundColor, borderRadius: BorderRadius.circular(100)),
+      decoration:
+          BoxDecoration(color: color, borderRadius: BorderRadius.circular(100)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [

@@ -2,7 +2,9 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:projeto_estagio/model/abilities_model.dart';
 import 'package:projeto_estagio/model/details_model.dart';
+import 'package:projeto_estagio/model/typedetailed_model.dart';
 import 'package:projeto_estagio/screens/detail/widgets/tab_habilidades.dart';
 import 'package:projeto_estagio/screens/detail/widgets/tab_movimentos.dart';
 import 'package:projeto_estagio/screens/detail/widgets/tab_tipos.dart';
@@ -13,16 +15,22 @@ import 'package:projeto_estagio/widgets/type_widget.dart';
 import '../../r.dart';
 
 class DetailScreen extends StatefulWidget {
-  const DetailScreen(
-      {Key? key,
-      required this.pokemon,
-      required this.image,
-      required this.typeName})
-      : super(key: key);
+  const DetailScreen({
+    Key? key,
+    required this.pokemon,
+    required this.image,
+    required this.typeName,
+    required this.color,
+    required this.abilities,
+    required this.typeDetailed,
+  }) : super(key: key);
 
   final Details? pokemon;
   final String image;
   final String typeName;
+  final Color color;
+  final List<Abilities?> abilities;
+  final List<TypeDetailed?> typeDetailed;
 
   @override
   State<DetailScreen> createState() => _DetailScreenState();
@@ -44,7 +52,8 @@ class _DetailScreenState extends State<DetailScreen>
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: FuncUtil.strokeText(text: widget.pokemon!.name!, fontSize: 26),
+        title: _strokeText(
+            text: FuncUtil.capitalize(widget.pokemon!.name!), fontSize: 26),
         centerTitle: true,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios_new),
@@ -58,7 +67,7 @@ class _DetailScreenState extends State<DetailScreen>
 
   Container _buildBody() {
     return Container(
-      color: ColorsUtil.electricType,
+      color: widget.color,
       // padding: const EdgeInsets.only(top: 300),
       child: Column(
         children: [
@@ -117,9 +126,9 @@ class _DetailScreenState extends State<DetailScreen>
 
               indicatorWeight: 3.2,
               indicatorPadding: EdgeInsets.fromLTRB(30, 0, 30, 10),
-              indicatorColor: ColorsUtil.primaryYellow,
-              unselectedLabelColor: ColorsUtil.primaryYellow,
-              labelColor: ColorsUtil.primaryYellow,
+              indicatorColor: widget.color,
+              unselectedLabelColor: widget.color,
+              labelColor: widget.color,
               // ignore: prefer_const_literals_to_create_immutables
               tabs: [
                 Tab(text: 'Habilidades'),
@@ -134,9 +143,17 @@ class _DetailScreenState extends State<DetailScreen>
             child: TabBarView(
               // ignore: prefer_const_literals_to_create_immutables
               children: [
-                TabHabilidades(abilities: widget.pokemon!.abilities),
-                TabTipos(type: widget.pokemon!.types),
-                TabMovimentos(moves: widget.pokemon!.moves),
+                TabHabilidades(
+                  abilities: widget.abilities,
+                  color: widget.color,
+                ),
+                TabTipos(
+                  type: widget.pokemon!.types,
+                  color: widget.color,
+                  typeDetailed: widget.typeDetailed,
+                ),
+                TabMovimentos(
+                    moves: widget.pokemon!.moves, color: widget.color),
               ],
               controller: _tabController,
             ),
@@ -154,7 +171,7 @@ class _DetailScreenState extends State<DetailScreen>
       width: 75,
       decoration: BoxDecoration(
         shape: BoxShape.rectangle,
-        color: ColorsUtil.getColorByHex('EBD479'),
+        color: ColorsUtil.getColorByHex('FFFFFF').withOpacity(0.3),
         borderRadius: BorderRadius.circular(50.0),
       ),
       child: Row(
@@ -167,10 +184,35 @@ class _DetailScreenState extends State<DetailScreen>
             height: 20,
           ),
           (stat.length > 2)
-              ? FuncUtil.strokeText(text: stat, fontSize: 15)
-              : FuncUtil.strokeText(text: stat, fontSize: 18),
+              ? _strokeText(text: stat, fontSize: 15)
+              : _strokeText(text: stat, fontSize: 18),
         ],
       ),
+    );
+  }
+
+  Stack _strokeText({required String text, required double fontSize}) {
+    return Stack(
+      children: [
+        Text(
+          text,
+          style: TextStyle(
+              fontSize: fontSize,
+              fontWeight: FontWeight.w900,
+              foreground: Paint()..color = Colors.white),
+        ),
+        Text(
+          text,
+          style: TextStyle(
+            fontSize: fontSize,
+            fontWeight: FontWeight.w900,
+            foreground: Paint()
+              ..style = PaintingStyle.stroke
+              ..strokeWidth = 1
+              ..color = Colors.black,
+          ),
+        ),
+      ],
     );
   }
 

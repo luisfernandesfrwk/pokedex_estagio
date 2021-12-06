@@ -48,6 +48,8 @@ class Ability {
   factory Ability.fromMap(Map<String, dynamic> json) => Ability(
         ability: Species.fromMap(json["ability"]),
       );
+
+  get url => null;
 }
 
 class Species {

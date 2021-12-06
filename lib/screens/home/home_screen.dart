@@ -38,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     if (_pokeStore.pokeUrl == null) {
-      _pokeStore.fetchPokemonUrl(0);
+      _pokeStore.fetchPokemonUrl(_pokeStore.getOfsset);
     }
   }
 
@@ -71,9 +71,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       Scaffold.of(context).showSnackBar(snackBar);
                     }
                   }),
-              (_pokeStore.listPokemon.isNotEmpty)
-                  ? _buildList()
-                  : _errorWidget(),
+              Visibility(
+                  visible: _pokeStore.isVibile,
+                  replacement: Loading(),
+                  child: _buildList())
             ],
           );
         }),
@@ -83,59 +84,56 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Expanded _buildList() {
     return Expanded(
-        child: (_pokeStore.pokeUrl != null && _pokeStore.listPokemon.isNotEmpty)
-            ? GridView.builder(
-                padding: const EdgeInsets.fromLTRB(24, 16, 16, 16),
-                addAutomaticKeepAlives: false,
-                addRepaintBoundaries: true,
-                shrinkWrap: true,
-                physics: const BouncingScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  childAspectRatio: 151 / 107,
-                  mainAxisSpacing: 19,
-                  crossAxisSpacing: 19,
-                  crossAxisCount: 2,
-                ),
-                itemCount: _pokeStore.setItemCount(),
-                itemBuilder: (context, index) {
-                  if (_pokeStore.canSetOffset(index)) {
-                    return Loading();
-                  }
+      child: (_pokeStore.pokeUrl != null && _pokeStore.listPokemon.isNotEmpty)
+          ? GridView.builder(
+              padding: const EdgeInsets.fromLTRB(24, 16, 16, 16),
+              addRepaintBoundaries: true,
+              shrinkWrap: true,
+              physics: const BouncingScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                childAspectRatio: 151 / 107,
+                mainAxisSpacing: 19,
+                crossAxisSpacing: 19,
+                crossAxisCount: 2,
+              ),
+              itemCount: _pokeStore.setItemCount(),
+              itemBuilder: (context, index) {
+                if (_pokeStore.canSetOffset(index)) {
+                  return Loading();
+                }
 
-                  Details? details = _pokeStore.listPokemon[index];
-                  return _card(
-                      details, details?.name, details!.types[0].type.name);
-                })
-            : Loading());
+                Details? details = _pokeStore.listPokemon[index];
+                return _card(
+                    details, details?.name, details!.types[0].type.name);
+              })
+          : _errorWidget(),
+    );
   }
 
-  Expanded _errorWidget() {
-    return Expanded(
-      child: Container(
-        // height: 630,
-        padding: EdgeInsets.only(top: 125),
-        child: Column(
-          children: [
-            Text(
-              'Não encontramos pokemons com este nome',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: ColorsUtil.primaryYellow,
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-              ),
+  Container _errorWidget() {
+    return Container(
+      // height: 630,
+      padding: EdgeInsets.only(top: 125),
+      child: Column(
+        children: [
+          Text(
+            'Não encontramos pokemons com este nome',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: ColorsUtil.primaryYellow,
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
             ),
-            Container(
-              margin: EdgeInsets.only(top: 14),
-              width: 151,
-              height: 151,
-              decoration: BoxDecoration(
-                image:
-                    DecorationImage(image: AssetImage(R.assetsPokeballError)),
-              ),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 14),
+            width: 151,
+            height: 151,
+            decoration: BoxDecoration(
+              image: DecorationImage(image: AssetImage(R.assetsPokeballError)),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -143,12 +141,21 @@ class _HomeScreenState extends State<HomeScreen> {
   InkWell _card(Details? details, String? pokemonName, String typeName) {
     final typeColor = ColorsUtil.getColorByType(type: typeName);
     return InkWell(
-      onTap: () {
+      onTap: () async {
+        _pokeStore.searchAbility(details!.abilities!);
+        _pokeStore.searchType(details.types);
+        await Future.delayed(Duration(seconds: 1));
+
+        print(_pokeStore.listType);
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => DetailScreen(
-                pokemon: details,
-                image: details!.sprites!.other!.officialArtwork.frontDefault,
-                typeName: typeName)));
+                  pokemon: details,
+                  image: details.sprites!.other!.officialArtwork.frontDefault,
+                  typeName: typeName,
+                  color: ColorsUtil.getColorByType(type: typeName),
+                  abilities: _pokeStore.listAbility,
+                  typeDetailed: _pokeStore.listType,
+                )));
       },
       child: Container(
         padding: EdgeInsets.fromLTRB(11, 0, 0, 0),

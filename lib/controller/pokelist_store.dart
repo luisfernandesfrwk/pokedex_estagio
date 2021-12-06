@@ -3,8 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:projeto_estagio/api/poke_api.dart';
+import 'package:projeto_estagio/model/abilities_model.dart';
 import 'package:projeto_estagio/model/details_model.dart';
 import 'package:projeto_estagio/model/pokelist_model.dart';
+import 'package:projeto_estagio/model/typedetailed_model.dart';
 import 'package:projeto_estagio/r.dart';
 import 'package:projeto_estagio/utils/colors_util.dart';
 import 'package:projeto_estagio/widgets/loading_widget.dart';
@@ -14,6 +16,9 @@ class PokeListStore = _PokeListStoreBase with _$PokeListStore;
 
 abstract class _PokeListStoreBase with Store {
   final PokeApi _pokeApi = PokeApi();
+
+  @observable
+  bool _visible = true;
 
   @observable
   bool _searching = false;
@@ -28,7 +33,10 @@ abstract class _PokeListStoreBase with Store {
   String search = "";
 
   @observable
-  ObservableList<Ability> _ability = ObservableList<Ability>();
+  ObservableList<TypeDetailed?> _listType = ObservableList<TypeDetailed?>();
+
+  @observable
+  ObservableList<Abilities?> _listAbility = ObservableList<Abilities?>();
 
   @observable
   ObservableList<Details?> _listPokemon = ObservableList<Details>();
@@ -40,7 +48,10 @@ abstract class _PokeListStoreBase with Store {
   PokeUrl? _pokemonsUrl;
 
   @computed
-  ObservableList<Ability> get ability => _ability;
+  ObservableList<TypeDetailed?> get listType => _listType;
+
+  @computed
+  ObservableList<Abilities?> get listAbility => _listAbility;
 
   @computed
   ObservableList<Details?> get listPokemon => _listPokemon;
@@ -50,6 +61,12 @@ abstract class _PokeListStoreBase with Store {
 
   @computed
   Details? get pokeDetail => _pokemonDetail;
+
+  @computed
+  int get getOfsset => _offset;
+
+  @computed
+  bool get isVibile => _visible;
 
   @computed
   bool get isSearching => _searching;
@@ -77,16 +94,27 @@ abstract class _PokeListStoreBase with Store {
   @action
   Future onTapSearch(SnackBar snackBar) async {
     if (isSearchValid) {
+      _visible = false;
       _listPokemon.clear();
       _searching = true;
       final response = await fetchPokemonDetail(name: search.trim());
-
       listPokemon.add(response);
       setItemCount();
+      _visible = true;
     } else {
       return snackBar;
     }
   }
+
+  @action
+  Future fetchPokemonType({required String url}) =>
+      _pokeApi.searchType(url: url).then((type) => _listType.add(type));
+
+  @action
+  Future fetchPokemonAbility({required String url}) => _pokeApi
+      .searchAbility(url: url)
+      .then((ability) => _listAbility.add(ability))
+      .onError((error, stackTrace) => print(error));
 
   @action
   Future fetchPokemonDetail({required String name}) => _pokeApi
@@ -102,7 +130,10 @@ abstract class _PokeListStoreBase with Store {
         _pokemonsUrl = pokemons;
         pokemons?.results.forEach((element) async {
           final response = await _pokeApi.searchPokemon(name: element.name);
-          listPokemon.add(response);
+          if (response != null) {
+            listPokemon.add(response);
+          }
+          listPokemon.sort((a, b) => a!.id!.compareTo(b!.id!));
         });
       }).onError((error, stackTrace) {
         print('erro: $error');
@@ -110,18 +141,15 @@ abstract class _PokeListStoreBase with Store {
 
   @action
   Future setOffset() async {
-    _offset++;
-
-    if (_offset < 55) {
+    if (_offset <= 55) {
+      _offset++;
       await fetchPokemonUrl(_offset * 20);
-    } else {
-      return;
     }
   }
 
   @action
   int setItemCount() {
-    itemCount = (listPokemon.length < 1100 && !isSearching)
+    itemCount = (listPokemon.length < 1096 && !isSearching)
         ? listPokemon.length + 1
         : listPokemon.length;
 
@@ -130,10 +158,26 @@ abstract class _PokeListStoreBase with Store {
 
   @action
   bool canSetOffset(int index) {
-    if (index == listPokemon.length && listPokemon.length < 1100) {
+    if (index == listPokemon.length && listPokemon.length < 1096) {
       setOffset();
       return true;
     }
     return false;
+  }
+
+  @action
+  void searchAbility(List<Ability?> list) {
+    _listAbility.clear();
+    list.forEach((ability) {
+      fetchPokemonAbility(url: ability!.ability.url);
+    });
+  }
+
+  @action
+  void searchType(List<Type> list) {
+    _listType.clear();
+    list.forEach((type) {
+      fetchPokemonType(url: type.type.url);
+    });
   }
 }

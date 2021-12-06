@@ -22,18 +22,15 @@ class Result {
   Result({
     required this.name,
     required this.url,
-    this.type,
   });
 
   final String name;
   final String url;
-  String? type;
 
   factory Result.fromJson(String str) => Result.fromMap(json.decode(str));
 
   factory Result.fromMap(Map<String, dynamic> json) {
     return Result(
-      type: json["type"],
       name: json["name"],
       url: json["url"],
     );

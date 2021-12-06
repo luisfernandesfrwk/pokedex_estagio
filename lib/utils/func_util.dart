@@ -8,31 +8,6 @@ class FuncUtil {
     return 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/$indexPokemon.png';
   }
 
-  static Future<Response<dynamic>> getPokemon(String url) async =>
+  static Future<Response<dynamic>> getUrl(String url) async =>
       await Dio().get(url);
-
-  static Stack strokeText({required String text, required double fontSize}) {
-    return Stack(
-      children: [
-        Text(
-          text,
-          style: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.w900,
-              foreground: Paint()..color = Colors.white),
-        ),
-        Text(
-          text,
-          style: TextStyle(
-            fontSize: fontSize,
-            fontWeight: FontWeight.w900,
-            foreground: Paint()
-              ..style = PaintingStyle.stroke
-              ..strokeWidth = 1
-              ..color = Colors.black,
-          ),
-        ),
-      ],
-    );
-  }
 }

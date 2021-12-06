@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_estagio/model/details_model.dart';
 import 'package:projeto_estagio/utils/colors_util.dart';
+import 'package:projeto_estagio/utils/func_util.dart';
 
 class TabMovimentos extends StatelessWidget {
-  const TabMovimentos({Key? key, required this.moves}) : super(key: key);
+  const TabMovimentos({Key? key, required this.moves, required this.color})
+      : super(key: key);
 
   final List<Move>? moves;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +28,11 @@ class TabMovimentos extends StatelessWidget {
             return Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                color: ColorsUtil.electricType,
+                color: color,
               ),
               child: Center(
                   child: Text(
-                moves![index].move.name,
+                FuncUtil.capitalize(moves![index].move.name),
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               )),
             );

@@ -68,32 +68,32 @@ flutter:
     # assets-generator-begin
     # assets/*
     - assets/atkstat.png
-    - assets/bug.svg
-    - assets/dark.svg
+    - assets/bug.png
+    - assets/dark.png
     - assets/deffstat.png
-    - assets/dragon.svg
-    - assets/electric.svg
-    - assets/fairy.svg
-    - assets/fighting.svg
-    - assets/fire.svg
-    - assets/flying.svg
-    - assets/ghost.svg
-    - assets/grass.svg
-    - assets/ground.svg
+    - assets/dragon.png
+    - assets/electric.png
+    - assets/fairy.png
+    - assets/fighting.png
+    - assets/fire.png
+    - assets/flying.png
+    - assets/ghost.png
+    - assets/grass.png
+    - assets/ground.png
     - assets/hpstat.png
-    - assets/ice.svg
+    - assets/ice.png
     - assets/logo.png
-    - assets/normal.svg
-    - assets/poison.svg
+    - assets/normal.png
+    - assets/poison.png
     - assets/pokeballError.png
-    - assets/psychic.svg
-    - assets/rock.svg
-    - assets/shadow.svg
-    - assets/steel.svg
+    - assets/psychic.png
+    - assets/rock.png
+    - assets/shadow.png
+    - assets/steel.png
     - assets/swords.png
-    - assets/unknown.svg
-    - assets/warning.svg
-    - assets/water.svg
+    - assets/unknown.png
+    - assets/warning.png
+    - assets/water.png
     # assets-generator-end
 
   # An image asset can refer to one or more resolution-specific "variants", see
