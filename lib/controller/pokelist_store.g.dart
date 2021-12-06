@@ -9,6 +9,13 @@ part of 'pokelist_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$PokeListStore on _PokeListStoreBase, Store {
+  Computed<ObservableList<Ability>>? _$abilityComputed;
+
+  @override
+  ObservableList<Ability> get ability => (_$abilityComputed ??=
+          Computed<ObservableList<Ability>>(() => super.ability,
+              name: '_PokeListStoreBase.ability'))
+      .value;
   Computed<ObservableList<Details?>>? _$listPokemonComputed;
 
   @override
@@ -108,6 +115,21 @@ mixin _$PokeListStore on _PokeListStoreBase, Store {
   set search(String value) {
     _$searchAtom.reportWrite(value, super.search, () {
       super.search = value;
+    });
+  }
+
+  final _$_abilityAtom = Atom(name: '_PokeListStoreBase._ability');
+
+  @override
+  ObservableList<Ability> get _ability {
+    _$_abilityAtom.reportRead();
+    return super._ability;
+  }
+
+  @override
+  set _ability(ObservableList<Ability> value) {
+    _$_abilityAtom.reportWrite(value, super._ability, () {
+      super._ability = value;
     });
   }
 
@@ -245,6 +267,7 @@ mixin _$PokeListStore on _PokeListStoreBase, Store {
     return '''
 itemCount: ${itemCount},
 search: ${search},
+ability: ${ability},
 listPokemon: ${listPokemon},
 pokeUrl: ${pokeUrl},
 pokeDetail: ${pokeDetail},

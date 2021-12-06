@@ -5,6 +5,9 @@ import 'package:mobx/mobx.dart';
 import 'package:projeto_estagio/api/poke_api.dart';
 import 'package:projeto_estagio/model/details_model.dart';
 import 'package:projeto_estagio/model/pokelist_model.dart';
+import 'package:projeto_estagio/r.dart';
+import 'package:projeto_estagio/utils/colors_util.dart';
+import 'package:projeto_estagio/widgets/loading_widget.dart';
 part 'pokelist_store.g.dart';
 
 class PokeListStore = _PokeListStoreBase with _$PokeListStore;
@@ -25,6 +28,9 @@ abstract class _PokeListStoreBase with Store {
   String search = "";
 
   @observable
+  ObservableList<Ability> _ability = ObservableList<Ability>();
+
+  @observable
   ObservableList<Details?> _listPokemon = ObservableList<Details>();
 
   @observable
@@ -32,6 +38,9 @@ abstract class _PokeListStoreBase with Store {
 
   @observable
   PokeUrl? _pokemonsUrl;
+
+  @computed
+  ObservableList<Ability> get ability => _ability;
 
   @computed
   ObservableList<Details?> get listPokemon => _listPokemon;
@@ -92,7 +101,7 @@ abstract class _PokeListStoreBase with Store {
       _pokeApi.findAllUrl(name: '?offset=${offset}limit=20').then((pokemons) {
         _pokemonsUrl = pokemons;
         pokemons?.results.forEach((element) async {
-          final response = await _pokeApi.findPokemon(url: element.url);
+          final response = await _pokeApi.searchPokemon(name: element.name);
           listPokemon.add(response);
         });
       }).onError((error, stackTrace) {
@@ -112,15 +121,10 @@ abstract class _PokeListStoreBase with Store {
 
   @action
   int setItemCount() {
-    if (!isSearching) {
-      if (listPokemon.length < 1100) {
-        itemCount = listPokemon.length + 1;
-      } else {
-        itemCount = listPokemon.length;
-      }
-    } else {
-      itemCount = 1;
-    }
+    itemCount = (listPokemon.length < 1100 && !isSearching)
+        ? listPokemon.length + 1
+        : listPokemon.length;
+
     return itemCount;
   }
 
