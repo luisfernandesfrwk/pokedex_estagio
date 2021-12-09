@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors_in_immutables, prefer_const_constructors
 
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:projeto_estagio/r.dart';
 import 'package:projeto_estagio/utils/colors_util.dart';
@@ -7,6 +9,7 @@ import 'package:projeto_estagio/utils/colors_util.dart';
 class SearchHeader extends StatefulWidget {
   SearchHeader(
       {Key? key,
+      required this.isSearchValid,
       required this.controller,
       required this.onTapClear,
       required this.onTapSearch,
@@ -14,6 +17,7 @@ class SearchHeader extends StatefulWidget {
       required this.isEmpty})
       : super(key: key);
 
+  final bool isSearchValid;
   final TextEditingController controller;
   final VoidCallback onTapClear;
   final VoidCallback onTapSearch;
@@ -27,49 +31,53 @@ class SearchHeader extends StatefulWidget {
 class _SearchHeaderState extends State<SearchHeader> {
   @override
   Widget build(BuildContext context) {
+    double iconConstraints = widget.isEmpty ? 0 : 35;
+    double iconMargin = widget.isEmpty ? 0 : 3;
+    double iconSize = widget.isEmpty ? 0 : 25;
     return Column(
       // ignore: prefer_const_literals_to_create_immutables
       children: [
-        Container(
-          width: 165,
-          height: 60,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage(R.assetsLogo), fit: BoxFit.fill),
+        InkWell(
+          onTap: widget.onTapClear,
+          child: Container(
+            width: 165,
+            height: 60,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage(R.assetsLogo), fit: BoxFit.fill),
+            ),
           ),
         ),
         Row(
           children: [
             _textField(),
-            (widget.isEmpty)
-                ? SizedBox(
-                    width: 0.1,
-                    height: 0.1,
-                  )
-                : Container(
-                    width: 35,
-                    height: 35,
-                    margin: EdgeInsets.only(left: 3),
-                    child: _customIcon(
-                        ColorsUtil.textFieldBackground,
-                        ColorsUtil.primaryYellow,
-                        Icons.backspace,
-                        widget.onTapClear,
-                        EdgeInsets.only(right: 3),
-                        25),
-                  )
+            AnimatedContainer(
+                duration: Duration(milliseconds: 200),
+                width: iconConstraints,
+                height: iconConstraints,
+                margin: EdgeInsets.only(left: iconMargin),
+                child: _customIcon(
+                  ColorsUtil.textFieldBackground,
+                  ColorsUtil.primaryYellow,
+                  Icons.backspace,
+                  widget.onTapClear,
+                  EdgeInsets.only(right: 3),
+                  iconSize,
+                ))
           ],
         ),
       ],
     );
   }
 
-  Container _textField() {
-    return Container(
+  AnimatedContainer _textField() {
+    double width = widget.isEmpty ? 352 : 314;
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 200),
       padding: EdgeInsets.fromLTRB(32, 1, 15, 0),
       height: 50,
-      width: (widget.isEmpty) ? 350.9 : 314,
+      width: width,
       margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
       decoration: BoxDecoration(
         boxShadow: [

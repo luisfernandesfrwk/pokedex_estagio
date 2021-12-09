@@ -7,9 +7,6 @@ import 'package:projeto_estagio/model/abilities_model.dart';
 import 'package:projeto_estagio/model/details_model.dart';
 import 'package:projeto_estagio/model/pokelist_model.dart';
 import 'package:projeto_estagio/model/typedetailed_model.dart';
-import 'package:projeto_estagio/r.dart';
-import 'package:projeto_estagio/utils/colors_util.dart';
-import 'package:projeto_estagio/widgets/loading_widget.dart';
 part 'pokelist_store.g.dart';
 
 class PokeListStore = _PokeListStoreBase with _$PokeListStore;
@@ -78,13 +75,20 @@ abstract class _PokeListStoreBase with Store {
   bool get isEmpty => search.isEmpty;
 
   @action
-  void onChangedText(String value) => search = value;
+  void onChangedText(String value) {
+    search = value;
+    if (value.isEmpty && isSearching) _returnToHome();
+  }
 
   @action
   void onTapClear(TextEditingController controller) {
     search = '';
-    _offset = 0;
     controller.clear();
+    if (isSearching) _returnToHome();
+  }
+
+  void _returnToHome() {
+    _offset = 0;
     _listPokemon.clear();
     fetchPokemonUrl(_offset);
     setItemCount();
@@ -98,8 +102,10 @@ abstract class _PokeListStoreBase with Store {
       _listPokemon.clear();
       _searching = true;
       final response = await fetchPokemonDetail(name: search.trim());
-      listPokemon.add(response);
-      setItemCount();
+      if (response != null) {
+        listPokemon.add(response);
+        setItemCount();
+      }
       _visible = true;
     } else {
       return snackBar;
@@ -133,7 +139,6 @@ abstract class _PokeListStoreBase with Store {
           if (response != null) {
             listPokemon.add(response);
           }
-          listPokemon.sort((a, b) => a!.id!.compareTo(b!.id!));
         });
       }).onError((error, stackTrace) {
         print('erro: $error');

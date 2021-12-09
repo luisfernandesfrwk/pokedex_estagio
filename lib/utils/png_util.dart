@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_estagio/r.dart';
 
-class PngTypeUtil {
+class PngUtil {
   static Widget getPngType({required String name}) {
     switch (name) {
       case 'bug':

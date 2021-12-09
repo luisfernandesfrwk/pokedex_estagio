@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_estagio/utils/colors_util.dart';
 
-class Loading extends StatelessWidget {
-  const Loading({
+class LoadingWidget extends StatelessWidget {
+  const LoadingWidget({
     Key? key,
   }) : super(key: key);
 

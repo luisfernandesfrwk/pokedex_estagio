@@ -2,12 +2,12 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:projeto_estagio/model/abilities_model.dart';
+import 'package:projeto_estagio/controller/pokelist_store.dart';
 import 'package:projeto_estagio/model/details_model.dart';
 import 'package:projeto_estagio/model/typedetailed_model.dart';
-import 'package:projeto_estagio/screens/detail/widgets/tab_habilidades.dart';
-import 'package:projeto_estagio/screens/detail/widgets/tab_movimentos.dart';
-import 'package:projeto_estagio/screens/detail/widgets/tab_tipos.dart';
+import 'package:projeto_estagio/screens/detail/widgets/habilidades_widget.dart';
+import 'package:projeto_estagio/screens/detail/widgets/movimentos_widget.dart';
+import 'package:projeto_estagio/screens/detail/widgets/tipos_widget.dart';
 import 'package:projeto_estagio/utils/colors_util.dart';
 import 'package:projeto_estagio/utils/func_util.dart';
 import 'package:projeto_estagio/widgets/type_widget.dart';
@@ -21,16 +21,18 @@ class DetailScreen extends StatefulWidget {
     required this.image,
     required this.typeName,
     required this.color,
-    required this.abilities,
     required this.typeDetailed,
+    required this.store,
+    required this.skeletonCount,
   }) : super(key: key);
 
   final Details? pokemon;
   final String image;
   final String typeName;
   final Color color;
-  final List<Abilities?> abilities;
   final List<TypeDetailed?> typeDetailed;
+  final PokeListStore store;
+  final int skeletonCount;
 
   @override
   State<DetailScreen> createState() => _DetailScreenState();
@@ -143,16 +145,17 @@ class _DetailScreenState extends State<DetailScreen>
             child: TabBarView(
               // ignore: prefer_const_literals_to_create_immutables
               children: [
-                TabHabilidades(
-                  abilities: widget.abilities,
+                HabilidadesWidget(
+                  abilities: widget.store.listAbility,
                   color: widget.color,
+                  skeletonCount: widget.skeletonCount,
                 ),
-                TabTipos(
+                TiposWidget(
                   type: widget.pokemon!.types,
                   color: widget.color,
-                  typeDetailed: widget.typeDetailed,
+                  typeDetailed: widget.store.listType,
                 ),
-                TabMovimentos(
+                MovimentosWidget(
                     moves: widget.pokemon!.moves, color: widget.color),
               ],
               controller: _tabController,

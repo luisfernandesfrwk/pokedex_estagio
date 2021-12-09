@@ -38,6 +38,7 @@ dependencies:
   dio:
   cached_network_image: ^3.1.0+1
   flutter_svg:
+  skeleton_text:
 
 dev_dependencies:
   flutter_test:

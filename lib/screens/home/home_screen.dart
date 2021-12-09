@@ -52,32 +52,35 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   _buildBody() {
-    return Container(
-      color: ColorsUtil.appBackground,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Observer(builder: (BuildContext context) {
-          return Column(
-            children: [
-              SearchHeader(
-                  controller: _textEditingController,
-                  onChanged: _pokeStore.onChangedText,
-                  isEmpty: _pokeStore.isEmpty,
-                  onTapClear: () =>
-                      _pokeStore.onTapClear(_textEditingController),
-                  onTapSearch: () {
-                    _pokeStore.onTapSearch(snackBar);
-                    if (!_pokeStore.isSearchValid) {
-                      Scaffold.of(context).showSnackBar(snackBar);
-                    }
-                  }),
-              Visibility(
-                  visible: _pokeStore.isVibile,
-                  replacement: Loading(),
-                  child: _buildList())
-            ],
-          );
-        }),
+    return SafeArea(
+      child: Container(
+        color: ColorsUtil.appBackground,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Observer(builder: (BuildContext context) {
+            return Column(
+              children: [
+                SearchHeader(
+                    isSearchValid: _pokeStore.isSearchValid,
+                    controller: _textEditingController,
+                    onChanged: _pokeStore.onChangedText,
+                    isEmpty: _pokeStore.isEmpty,
+                    onTapClear: () =>
+                        _pokeStore.onTapClear(_textEditingController),
+                    onTapSearch: () {
+                      _pokeStore.onTapSearch(snackBar);
+                      if (!_pokeStore.isSearchValid) {
+                        Scaffold.of(context).showSnackBar(snackBar);
+                      }
+                    }),
+                Visibility(
+                    visible: _pokeStore.isVibile,
+                    replacement: LoadingWidget(),
+                    child: _buildList())
+              ],
+            );
+          }),
+        ),
       ),
     );
   }
@@ -99,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
               itemCount: _pokeStore.setItemCount(),
               itemBuilder: (context, index) {
                 if (_pokeStore.canSetOffset(index)) {
-                  return Loading();
+                  return LoadingWidget();
                 }
 
                 Details? details = _pokeStore.listPokemon[index];
@@ -144,17 +147,15 @@ class _HomeScreenState extends State<HomeScreen> {
       onTap: () async {
         _pokeStore.searchAbility(details!.abilities!);
         _pokeStore.searchType(details.types);
-        await Future.delayed(Duration(seconds: 1));
-
-        print(_pokeStore.listType);
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => DetailScreen(
                   pokemon: details,
                   image: details.sprites!.other!.officialArtwork.frontDefault,
                   typeName: typeName,
                   color: ColorsUtil.getColorByType(type: typeName),
-                  abilities: _pokeStore.listAbility,
+                  store: _pokeStore,
                   typeDetailed: _pokeStore.listType,
+                  skeletonCount: details.abilities!.length,
                 )));
       },
       child: Container(

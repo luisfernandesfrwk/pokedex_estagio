@@ -3,8 +3,8 @@ import 'package:projeto_estagio/model/details_model.dart';
 import 'package:projeto_estagio/utils/colors_util.dart';
 import 'package:projeto_estagio/utils/func_util.dart';
 
-class TabMovimentos extends StatelessWidget {
-  const TabMovimentos({Key? key, required this.moves, required this.color})
+class MovimentosWidget extends StatelessWidget {
+  const MovimentosWidget({Key? key, required this.moves, required this.color})
       : super(key: key);
 
   final List<Move>? moves;
@@ -33,7 +33,10 @@ class TabMovimentos extends StatelessWidget {
               child: Center(
                   child: Text(
                 FuncUtil.capitalize(moves![index].move.name),
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: ColorsUtil.appBackground),
               )),
             );
           })),

@@ -16,10 +16,10 @@ class ColorsUtil {
   static final rockType = getColorByHex('#7D7B7A');
   static final fightingType = getColorByHex('#5D87A1');
   static final bugType = getColorByHex('#3B9950');
-  static final darkType = getColorByHex('#5A5979');
+  static final darkType = getColorByHex('#8584B5');
   static final dragonType = getColorByHex('#61CAD9');
   static final fairyType = getColorByHex('#EA1369');
-  static final ghostType = getColorByHex('#9400C8');
+  static final ghostType = getColorByHex('#8E36AD');
   static final groundType = getColorByHex('#6E491E');
   static final iceType = getColorByHex('#83D5F8');
   static final poisonType = getColorByHex('#9B69D9');
