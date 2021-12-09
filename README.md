@@ -1,4 +1,4 @@
-# projeto_estagio
+# pokedex_estagio
 
 A new Flutter project.
 
