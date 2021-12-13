@@ -3,12 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:projeto_estagio/model/details_model.dart';
-import 'package:projeto_estagio/model/typedetailed_model.dart';
-import 'package:projeto_estagio/r.dart';
-import 'package:projeto_estagio/utils/colors_util.dart';
-import 'package:projeto_estagio/utils/png_util.dart';
-import 'package:projeto_estagio/widgets/type_widget.dart';
+import 'package:pokedex_estagio/model/details_model.dart';
+import 'package:pokedex_estagio/model/typedetailed_model.dart';
+import 'package:pokedex_estagio/r.dart';
+import 'package:pokedex_estagio/utils/colors_util.dart';
+import 'package:pokedex_estagio/utils/png_util.dart';
+import 'package:pokedex_estagio/widgets/type_widget.dart';
 
 class TiposWidget extends StatefulWidget {
   const TiposWidget(

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_estagio/utils/colors_util.dart';
+import 'package:pokedex_estagio/utils/colors_util.dart';
 import 'package:skeleton_text/skeleton_text.dart';
 
 class SkeletonContainer extends StatelessWidget {

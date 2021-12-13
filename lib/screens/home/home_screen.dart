@@ -2,15 +2,15 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:projeto_estagio/controller/pokelist_store.dart';
-import 'package:projeto_estagio/model/details_model.dart';
-import 'package:projeto_estagio/screens/detail/detail_screen.dart';
-import 'package:projeto_estagio/screens/home/widgets/search_header.dart';
+import 'package:pokedex_estagio/controller/pokedex_store.dart';
+import 'package:pokedex_estagio/model/details_model.dart';
+import 'package:pokedex_estagio/screens/detail/detail_screen.dart';
+import 'package:pokedex_estagio/screens/home/widgets/search_header.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:projeto_estagio/utils/colors_util.dart';
-import 'package:projeto_estagio/utils/func_util.dart';
-import 'package:projeto_estagio/widgets/loading_widget.dart';
-import 'package:projeto_estagio/widgets/type_widget.dart';
+import 'package:pokedex_estagio/utils/colors_util.dart';
+import 'package:pokedex_estagio/utils/func_util.dart';
+import 'package:pokedex_estagio/widgets/loading_widget.dart';
+import 'package:pokedex_estagio/widgets/type_widget.dart';
 
 import '../../r.dart';
 
@@ -22,7 +22,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final PokeListStore _pokeStore = PokeListStore();
+  final PokedexStore _pokeStore = PokedexStore();
   final TextEditingController _textEditingController = TextEditingController();
   final snackBar = SnackBar(
     content: Text('Nome muito pequeno'),

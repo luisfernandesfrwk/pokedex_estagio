@@ -1,16 +1,14 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:projeto_estagio/controller/pokelist_store.dart';
-import 'package:projeto_estagio/model/details_model.dart';
-import 'package:projeto_estagio/model/typedetailed_model.dart';
-import 'package:projeto_estagio/screens/detail/widgets/habilidades_widget.dart';
-import 'package:projeto_estagio/screens/detail/widgets/movimentos_widget.dart';
-import 'package:projeto_estagio/screens/detail/widgets/tipos_widget.dart';
-import 'package:projeto_estagio/utils/colors_util.dart';
-import 'package:projeto_estagio/utils/func_util.dart';
-import 'package:projeto_estagio/widgets/type_widget.dart';
+import 'package:pokedex_estagio/controller/pokedex_store.dart';
+import 'package:pokedex_estagio/model/details_model.dart';
+import 'package:pokedex_estagio/model/typedetailed_model.dart';
+import 'package:pokedex_estagio/screens/detail/widgets/habilidades_widget.dart';
+import 'package:pokedex_estagio/screens/detail/widgets/movimentos_widget.dart';
+import 'package:pokedex_estagio/screens/detail/widgets/tipos_widget.dart';
+import 'package:pokedex_estagio/utils/colors_util.dart';
+import 'package:pokedex_estagio/utils/func_util.dart';
+import 'package:pokedex_estagio/widgets/type_widget.dart';
 
 import '../../r.dart';
 
@@ -31,7 +29,7 @@ class DetailScreen extends StatefulWidget {
   final String typeName;
   final Color color;
   final List<TypeDetailed?> typeDetailed;
-  final PokeListStore store;
+  final PokedexStore store;
   final int skeletonCount;
 
   @override
@@ -58,7 +56,7 @@ class _DetailScreenState extends State<DetailScreen>
             text: FuncUtil.capitalize(widget.pokemon!.name!), fontSize: 26),
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new),
+          icon: const Icon(Icons.arrow_back_ios_new),
           onPressed: () => Navigator.of(context).pop(),
           iconSize: 17,
         ),
@@ -78,10 +76,8 @@ class _DetailScreenState extends State<DetailScreen>
               Container(
                 width: 138,
                 height: 308.444,
-                padding: EdgeInsets.only(top: 97),
-                // ignore: prefer_const_literals_to_create_immutables
+                padding: const EdgeInsets.only(top: 97),
                 child: Column(
-                  // ignore: prefer_const_literals_to_create_immutables
                   children: [
                     TypeWidget(
                       typeName: widget.typeName,
@@ -89,7 +85,7 @@ class _DetailScreenState extends State<DetailScreen>
                       height: 119,
                       fontSize: 18,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 19,
                     ),
                     _statWidget(
@@ -105,7 +101,7 @@ class _DetailScreenState extends State<DetailScreen>
                 ),
               ),
               Container(
-                padding: EdgeInsets.only(top: 60),
+                padding: const EdgeInsets.only(top: 60),
                 width: 246,
                 height: 308.444,
                 child: Hero(
@@ -120,22 +116,22 @@ class _DetailScreenState extends State<DetailScreen>
           Container(
             decoration: BoxDecoration(
                 color: ColorsUtil.appBackground,
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20))),
             child: TabBar(
-              padding: EdgeInsets.only(top: 10),
+              padding: const EdgeInsets.only(top: 10),
 
               indicatorWeight: 3.2,
-              indicatorPadding: EdgeInsets.fromLTRB(30, 0, 30, 10),
+              indicatorPadding: const EdgeInsets.fromLTRB(30, 0, 30, 10),
               indicatorColor: widget.color,
               unselectedLabelColor: widget.color,
               labelColor: widget.color,
               // ignore: prefer_const_literals_to_create_immutables
               tabs: [
-                Tab(text: 'Habilidades'),
-                Tab(text: 'Tipos'),
-                Tab(text: 'Movimentos')
+                const Tab(text: 'Habilidades'),
+                const Tab(text: 'Tipos'),
+                const Tab(text: 'Movimentos')
               ],
               controller: _tabController,
               indicatorSize: TabBarIndicatorSize.tab,
@@ -169,7 +165,7 @@ class _DetailScreenState extends State<DetailScreen>
   Widget _statWidget({required String image, required String stat}) {
     return Container(
       padding: const EdgeInsets.fromLTRB(15, 2, 16, 0),
-      margin: EdgeInsets.only(bottom: 5),
+      margin: const EdgeInsets.only(bottom: 5),
       height: 28,
       width: 75,
       decoration: BoxDecoration(
