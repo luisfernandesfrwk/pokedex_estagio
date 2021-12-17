@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_estagio/r.dart';
+import 'package:pokedex_estagio/r.dart';
 
 class PngUtil {
   static Widget getPngType({required String name}) {

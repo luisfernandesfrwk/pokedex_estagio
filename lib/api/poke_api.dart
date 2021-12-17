@@ -1,11 +1,11 @@
 // ignore_for_file: avoid_print, unnecessary_null_comparison
 
-import 'package:projeto_estagio/model/details_model.dart';
-import 'package:projeto_estagio/model/pokelist_model.dart';
-import 'package:projeto_estagio/model/typedetailed_model.dart';
-import 'package:projeto_estagio/utils/consts_util.dart';
-import 'package:projeto_estagio/utils/func_util.dart';
-import 'package:projeto_estagio/model/abilities_model.dart';
+import 'package:pokedex_estagio/model/details_model.dart';
+import 'package:pokedex_estagio/model/pokelist_model.dart';
+import 'package:pokedex_estagio/model/typedetailed_model.dart';
+import 'package:pokedex_estagio/utils/consts_util.dart';
+import 'package:pokedex_estagio/utils/func_util.dart';
+import 'package:pokedex_estagio/model/abilities_model.dart';
 
 class PokeApi {
   Future<PokeUrl?> findAllUrl({String name = ''}) async {

@@ -1,12 +1,10 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:projeto_estagio/model/abilities_model.dart';
-import 'package:projeto_estagio/screens/detail/widgets/skeleton_container_widget.dart';
-import 'package:projeto_estagio/utils/colors_util.dart';
-import 'package:projeto_estagio/utils/func_util.dart';
+import 'package:pokedex_estagio/model/abilities_model.dart';
+import 'package:pokedex_estagio/screens/detail/widgets/skeleton_container_widget.dart';
+import 'package:pokedex_estagio/utils/colors_util.dart';
+import 'package:pokedex_estagio/utils/func_util.dart';
 
 class HabilidadesWidget extends StatefulWidget {
   const HabilidadesWidget(
@@ -29,7 +27,7 @@ class _HabilidadesWidgetState extends State<HabilidadesWidget> {
   Widget build(BuildContext context) {
     return Observer(builder: (BuildContext context) {
       return Container(
-        padding: EdgeInsets.fromLTRB(24, 0, 24, 0),
+        padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
         color: ColorsUtil.appBackground,
         child: Container(
           color: ColorsUtil.appBackground,
@@ -51,22 +49,22 @@ class _HabilidadesWidgetState extends State<HabilidadesWidget> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 5),
+            const SizedBox(height: 5),
             Text(
               FuncUtil.capitalize(widget.abilities[index]!.name),
               style: TextStyle(color: widget.color, fontSize: 18),
             ),
-            SizedBox(
+            const SizedBox(
               height: 5,
             ),
             Text(
               widget.abilities[index]!.flavorTextEntries![0].flavorText,
-              style: TextStyle(
+              style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                   fontSize: 12),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             )
           ],
@@ -84,18 +82,18 @@ class _HabilidadesWidgetState extends State<HabilidadesWidget> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
+            const SizedBox(
               height: 19,
             ),
             SkeletonContainer.title(
               width: 80,
               color: widget.color,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             SkeletonContainer.text(width: 300, color: widget.color),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             SkeletonContainer.text(width: 300, color: widget.color),
-            SizedBox(
+            const SizedBox(
               height: 19,
             )
           ],

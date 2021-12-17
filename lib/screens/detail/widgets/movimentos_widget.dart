@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_estagio/model/details_model.dart';
-import 'package:projeto_estagio/utils/colors_util.dart';
-import 'package:projeto_estagio/utils/func_util.dart';
+import 'package:pokedex_estagio/model/details_model.dart';
+import 'package:pokedex_estagio/utils/colors_util.dart';
+import 'package:pokedex_estagio/utils/func_util.dart';
 
 class MovimentosWidget extends StatelessWidget {
   const MovimentosWidget({Key? key, required this.moves, required this.color})

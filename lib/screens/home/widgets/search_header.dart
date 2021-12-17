@@ -3,8 +3,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:projeto_estagio/r.dart';
-import 'package:projeto_estagio/utils/colors_util.dart';
+import 'package:pokedex_estagio/r.dart';
+import 'package:pokedex_estagio/utils/colors_util.dart';
 
 class SearchHeader extends StatefulWidget {
   SearchHeader(

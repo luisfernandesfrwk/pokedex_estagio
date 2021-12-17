@@ -1,8 +1,6 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
-import 'package:projeto_estagio/utils/colors_util.dart';
-import 'package:projeto_estagio/utils/func_util.dart';
+import 'package:pokedex_estagio/utils/colors_util.dart';
+import 'package:pokedex_estagio/utils/func_util.dart';
 
 class TypeWidget extends StatelessWidget {
   const TypeWidget(
@@ -29,13 +27,12 @@ class TypeWidget extends StatelessWidget {
         shape: BoxShape.rectangle,
         color: Colors.white,
         borderRadius: BorderRadius.circular(50.0),
-        // ignore: prefer_const_literals_to_create_immutables
         boxShadow: [
           BoxShadow(
             color: Colors.white.withOpacity(0.5),
             spreadRadius: 0.1,
             blurRadius: 1,
-            offset: Offset(0, 1.5),
+            offset: const Offset(0, 1.5),
           )
         ],
       ),

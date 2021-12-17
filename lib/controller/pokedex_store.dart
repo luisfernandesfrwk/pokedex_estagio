@@ -1,17 +1,15 @@
-// ignore_for_file: avoid_function_literals_in_foreach_calls, prefer_final_fields, unused_field, avoid_print
-
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
-import 'package:projeto_estagio/api/poke_api.dart';
-import 'package:projeto_estagio/model/abilities_model.dart';
-import 'package:projeto_estagio/model/details_model.dart';
-import 'package:projeto_estagio/model/pokelist_model.dart';
-import 'package:projeto_estagio/model/typedetailed_model.dart';
-part 'pokelist_store.g.dart';
+import 'package:pokedex_estagio/api/poke_api.dart';
+import 'package:pokedex_estagio/model/abilities_model.dart';
+import 'package:pokedex_estagio/model/details_model.dart';
+import 'package:pokedex_estagio/model/pokelist_model.dart';
+import 'package:pokedex_estagio/model/typedetailed_model.dart';
+part 'pokedex_store.g.dart';
 
-class PokeListStore = _PokeListStoreBase with _$PokeListStore;
+class PokedexStore = _PokedexStoreBase with _$PokedexStore;
 
-abstract class _PokeListStoreBase with Store {
+abstract class _PokedexStoreBase with Store {
   final PokeApi _pokeApi = PokeApi();
 
   @observable
@@ -181,8 +179,8 @@ abstract class _PokeListStoreBase with Store {
   @action
   void searchType(List<Type> list) {
     _listType.clear();
-    list.forEach((type) {
+    for (var type in list) {
       fetchPokemonType(url: type.type.url);
-    });
+    }
   }
 }
