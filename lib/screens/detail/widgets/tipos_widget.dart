@@ -56,70 +56,72 @@ class _TiposWidgetState extends State<TiposWidget> {
           Expanded(
             child: Observer(
               builder: (BuildContext context) {
-                return Row(
-                  children: [
-                    Container(
-                      // color: Colors.white,
-                      width: 191.9,
-                      height: 371,
-                      child: Column(
-                        children: [
-                          _cardTipo(
-                            Colors.white,
-                            Colors.white,
-                            'Ataque',
-                            R.assetsSwords,
-                          ),
-                          _buildList(
-                              'Dobro do dano em',
-                              widget.typeDetailed[0]?.damageRelations
-                                  ?.doubleDamageTo),
-                          _buildList(
-                              'Metade do dano em',
-                              widget.typeDetailed[0]?.damageRelations
-                                  ?.halfDamageTo),
-                          _buildList(
-                              'Nenhum dano em',
-                              widget
-                                  .typeDetailed[0]?.damageRelations?.noDamageTo)
-                        ],
+                return SingleChildScrollView(
+                  child: Row(
+                    children: [
+                      Container(
+                        // color: Colors.white,
+                        width: 191.9,
+                        height: 371,
+                        child: Column(
+                          children: [
+                            _cardTipo(
+                              Colors.white,
+                              Colors.white,
+                              'Ataque',
+                              R.assetsSwords,
+                            ),
+                            _buildList(
+                                'Dobro do dano em',
+                                widget.typeDetailed[0]?.damageRelations
+                                    ?.doubleDamageTo),
+                            _buildList(
+                                'Metade do dano em',
+                                widget.typeDetailed[0]?.damageRelations
+                                    ?.halfDamageTo),
+                            _buildList(
+                                'Nenhum dano em',
+                                widget.typeDetailed[0]?.damageRelations
+                                    ?.noDamageTo)
+                          ],
+                        ),
                       ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 5),
-                      color: ColorsUtil.electricType,
-                      alignment: Alignment.center,
-                      height: 343,
-                      width: 0.2,
-                    ),
-                    Container(
-                      // color: Colors.black,
-                      width: 191.9,
-                      height: 371,
-                      child: Column(
-                        children: [
-                          _cardTipo(
-                            ColorsUtil.appBackground,
-                            Colors.black,
-                            'Defesa',
-                            R.assetsDeffstat,
-                          ),
-                          _buildList(
-                              'Dobro do dano de',
-                              widget.typeDetailed[0]?.damageRelations
-                                  ?.doubleDamageFrom),
-                          _buildList(
-                              'Metade do dano de',
-                              widget.typeDetailed[0]?.damageRelations
-                                  ?.doubleDamageFrom),
-                          _buildList(
-                              'Nenhum dano de',
-                              widget.typeDetailed[0]?.damageRelations
-                                  ?.noDamageFrom)
-                        ],
+                      Container(
+                        margin: EdgeInsets.only(top: 5),
+                        color: ColorsUtil.electricType,
+                        alignment: Alignment.center,
+                        height: 343,
+                        width: 0.2,
                       ),
-                    )
-                  ],
+                      Container(
+                        // color: Colors.black,
+                        width: 191.9,
+                        height: 371,
+                        child: Column(
+                          children: [
+                            _cardTipo(
+                              ColorsUtil.appBackground,
+                              Colors.black,
+                              'Defesa',
+                              R.assetsDeffstat,
+                            ),
+                            _buildList(
+                                'Dobro do dano de',
+                                widget.typeDetailed[0]?.damageRelations
+                                    ?.doubleDamageFrom),
+                            _buildList(
+                                'Metade do dano de',
+                                widget.typeDetailed[0]?.damageRelations
+                                    ?.doubleDamageFrom),
+                            _buildList(
+                                'Nenhum dano de',
+                                widget.typeDetailed[0]?.damageRelations
+                                    ?.noDamageFrom)
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 );
               },
             ),

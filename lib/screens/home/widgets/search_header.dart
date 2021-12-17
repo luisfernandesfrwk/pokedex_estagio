@@ -72,7 +72,9 @@ class _SearchHeaderState extends State<SearchHeader> {
   }
 
   AnimatedContainer _textField() {
-    double width = widget.isEmpty ? 352 : 314;
+    double width = widget.isEmpty
+        ? (MediaQuery.of(context).size.width - 32)
+        : (MediaQuery.of(context).size.width - 70);
     return AnimatedContainer(
       duration: Duration(milliseconds: 200),
       padding: EdgeInsets.fromLTRB(32, 1, 15, 0),

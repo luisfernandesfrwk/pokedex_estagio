@@ -13,7 +13,7 @@ class MovimentosWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(24, 0, 24, 0),
+      padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
       color: ColorsUtil.appBackground,
       child: GridView.builder(
           physics: const BouncingScrollPhysics(),

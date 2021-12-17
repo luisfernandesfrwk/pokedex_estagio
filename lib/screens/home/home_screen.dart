@@ -37,9 +37,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    if (_pokeStore.pokeUrl == null) {
-      _pokeStore.fetchPokemonUrl(_pokeStore.getOfsset);
-    }
+    // if (_pokeStore.pokeUrl == null) {
+    _pokeStore.fetchPokemonUrl(_pokeStore.getOfsset);
+    // }
   }
 
   @override
@@ -205,7 +205,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 tag: 'pokemon-img-$pokemonName',
                 child: CachedNetworkImage(
                   imageUrl:
-                      details!.sprites!.other!.officialArtwork.frontDefault,
+                      details?.sprites?.other?.officialArtwork.frontDefault ??
+                          '',
                   alignment: Alignment.topRight,
                   fit: BoxFit.cover,
                   width: 81,
