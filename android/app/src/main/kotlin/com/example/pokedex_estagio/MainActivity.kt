@@ -1,4 +1,4 @@
-package com.example.projeto_estagio
+package com.example.pokedex_estagio
 
 import io.flutter.embedding.android.FlutterActivity
 
